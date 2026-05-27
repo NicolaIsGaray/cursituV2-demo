@@ -44,4 +44,4 @@ COPY --from=backend-build /app/target/*.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Dserver.port=${PORT:8080}", "-Dhttps.protocols=TLSv1.2,TLSv1.3", "-jar", "app.jar"]
