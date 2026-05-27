@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Classroom } from '../models/classroom.model';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment.development';
+import { environment } from '../../environments/environment';
 import { Assignment } from '../models/assignment.model';
 import { ClassroomDTO } from '../models/dto/classroomDTO';
 import { ExamDTO } from '../models/dto/examDTO';
