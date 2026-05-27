@@ -70,7 +70,3 @@ Una vez que la compilación finalice con éxito, abrí tu navegador e ingresá a
 * **Llenado de Datos:** La base de datos asociada está completamente disponible para la creación de usuarios, asignación de materias, horarios y simulación de flujos reales dentro del aula virtual.
 * **Persistencia Volátil:** Todos los datos generados durante la sesión de uso se almacenarán de forma local en la instancia definida en tu variable `MONGO_URI_TESTER`.
 * **Trazabilidad:** Si experimentás algún comportamiento inesperado o error `500` en la interfaz, podés consultar la consola de IntelliJ IDEA para revisar los logs de depuración del servidor.
-
-```
-
-```
