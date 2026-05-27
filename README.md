@@ -1,5 +1,4 @@
 
-```markdown
 # Cursitu v0.9 — Guía de Configuración para el Entorno Demo
 
 Este documento detalla los pasos necesarios para desplegar el entorno local de **Cursitu**, una plataforma de aula virtual desarrollada para el Instituto Tecnológico Universitario de la Universidad Nacional de Cuyo. Esta versión está configurada específicamente como una **Demo Funcional**, ideal para explorar las características del sistema, interactuar con el aula virtual y realizar la carga inicial de datos de prueba.
@@ -25,9 +24,7 @@ Antes de comenzar, asegurate de tener instaladas las siguientes herramientas en 
 ### Clonar el repositorio
 
 ```bash
-git clone [https://github.com/NicolaIsGaray/cursituV2.git](https://github.com/NicolaIsGaray/cursituV2.git)
-
-```
+git clone https://github.com/NicolaIsGaray/cursituV2.git
 
 ### Configurar la base de datos
 
