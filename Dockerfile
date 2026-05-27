@@ -16,7 +16,7 @@ ENV ANGULAR_API_URL=$ANGULAR_API_URL
 RUN npm run build:prod
 
 # ==========================================
-# ETAPA 2: Construcción del Backend (Spring Boot con Java 25)
+# ETAPA 2: Construcción del Backend
 # ==========================================
 FROM eclipse-temurin:25-jdk-alpine AS backend-build
 WORKDIR /app
@@ -29,6 +29,8 @@ RUN mvn dependency:go-offline -B
 COPY src/ ./src/
 
 RUN rm -rf src/main/resources/static/*
+
+COPY --from=frontend-build /app/src/main/resources/static/ src/main/resources/static/
 
 RUN mvn clean package -DskipTests
 
