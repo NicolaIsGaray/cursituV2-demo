@@ -31,7 +31,7 @@ export class AuthService {
   );
   userRole$ = this.roleSubject.asObservable();
 
-  constructor(private activeRoute: Router) {}
+  constructor(private router: Router) {}
 
   login(user: LoginData): Observable<User> {
   return this.http.post<User>(`${this.apiUrl}/login`, user).pipe(
@@ -70,15 +70,13 @@ export class AuthService {
 
   getAuthStatus() {
     if (!this.currentUserValue) {
-      if (this.activeRoute.url === '/register-professor') return;
+      if (this.router.url.includes('/register-professor')) {
+        return; 
+      }
       this.route.navigate(['/login']);
       return;
     }
-
-    if (this.currentRole === 'ADMIN') {
-      this.route.navigate(['/user-management']);
-    }
-  }
+}
 
   // Método auxiliar privado para el constructor del Subject
   private getUserFromLocalStorage(): User | null {
