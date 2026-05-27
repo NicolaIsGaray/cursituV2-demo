@@ -1,6 +1,4 @@
 
----
-
 ```markdown
 # Cursitu v0.9 — Guía de Configuración para el Entorno Demo
 
