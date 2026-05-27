@@ -69,6 +69,10 @@ export class App implements OnInit {
     return this.router.url === '/login';
   }
 
+  isRegisterTeacherPage(): boolean {
+    return this.router.url === '/register-professor';
+  }
+
   isDropdownOpen = false;
 
   toggleDropdown() {

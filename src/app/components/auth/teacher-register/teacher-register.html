@@ -1,0 +1,199 @@
+<div class="login-page">
+  <div class="login-container">
+    <!-- Lado del Formulario -->
+    <div class="login-form-side">
+      <div class="brand-header">
+        <span class="material-symbols-outlined">auto_stories</span>
+        <h1>CURSITU <span style="font-weight: 400; color: #888">DEMO</span></h1>
+      </div>
+
+      <!-- Indicador de pasos intuitivo -->
+      <div class="stepper-indicator">
+        <div class="step" [class.active]="currentStep >= 1">1</div>
+        <div class="step-line" [class.active]="currentStep >= 2"></div>
+        <div class="step" [class.active]="currentStep >= 2">2</div>
+        <div class="step-line" [class.active]="currentStep >= 3"></div>
+        <div class="step" [class.active]="currentStep >= 3">3</div>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <!-- PASO 1: CUENTA -->
+        @if (currentStep === 1) {
+          <div class="login-content" formGroupName="account">
+            <h2>Creá tu cuenta</h2>
+            <p>Ingresá tus credenciales de acceso para la plataforma.</p>
+
+            <div class="input-group">
+              <label>Nombre</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined" style="color: #666; font-size: 20px"
+                  >person</span
+                >
+                <input type="text" formControlName="name" placeholder="Ingresa tu nombre" />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>DNI (Sin puntos)</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined" style="color: #666; font-size: 20px"
+                  >badge</span
+                >
+                <input type="text" formControlName="dni" placeholder="Ej: 40123456" maxlength="8" />
+              </div>
+            </div>
+
+            <div class="input-group">
+              <div class="input-wrapper">
+                <span style="color: #666; font-size: 12px"
+                  >Al Iniciar Sesión, deberás ingresar tu DNI como contraseña.</span
+                >
+              </div>
+            </div>
+
+            <button type="button" class="btn-login" style="margin-top: 15px" (click)="nextStep()">
+              Siguiente Paso
+            </button>
+          </div>
+        }
+
+        <!-- PASO 2: MATERIA -->
+        @if (currentStep === 2) {
+          <div class="login-content" formGroupName="subject">
+            <h2>Configurá tu Materia</h2>
+            <p>Contanos qué materia vas a dictar este semestre.</p>
+
+            <div class="input-group">
+              <label>Nombre de la Materia</label>
+              <div class="input-wrapper">
+                <span class="material-symbols-outlined" style="color: #666; font-size: 20px"
+                  >menu_book</span
+                >
+                <input type="text" formControlName="name" placeholder="Ej: Programación Avanzada" />
+              </div>
+            </div>
+
+            <div class="input-row">
+              <div class="input-group" style="flex: 1">
+                <label>Año de cursada</label>
+                <div class="input-wrapper">
+                  <select formControlName="year" class="native-select">
+                    <option value="">Seleccionar...</option>
+                    <option value="1">1° Año</option>
+                    <option value="2">2° Año</option>
+                    <option value="3">3° Año</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="input-group" style="flex: 1">
+                <label>Cuatrimestre</label>
+                <div class="input-wrapper">
+                  <select formControlName="period" class="native-select">
+                    <option value="">Seleccionar...</option>
+                    <option value="1">1° Cuatrimestre</option>
+                    <option value="2">2° Cuatrimestre</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label>Identificador de color (Para el curso)</label>
+              <div class="input-wrapper" style="padding: 6px 12px">
+                <input
+                  type="color"
+                  formControlName="color"
+                  style="width: 40px; height: 30px; padding: 0; cursor: pointer"
+                />
+                <span style="font-size: 0.85rem; color: #666; margin-left: 10px; font-weight: 600"
+                  >Elegí el tono visual de tu aula</span
+                >
+              </div>
+            </div>
+
+            <div class="action-buttons-group">
+              <button type="button" class="btn-secondary" (click)="prevStep()">Volver</button>
+              <button type="button" class="btn-login" style="flex: 2" (click)="nextStep()">
+                Siguiente Paso
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- PASO 3: HORARIOS -->
+        @if (currentStep === 3) {
+          <div class="login-content">
+            <h2>Asigná tus Horarios</h2>
+            <p>Establecé los días y bloques horarios de tu cursada.</p>
+
+            <div class="schedules-scroll-container" formArrayName="schedules">
+              @for (slot of schedulesFormArray.controls; track $index) {
+                <div class="schedule-form-row" [formGroupName]="$index">
+                  <div class="input-group" style="flex: 1.5">
+                    <div class="input-wrapper">
+                      <select formControlName="day" class="native-select">
+                        <option value="">Día...</option>
+                        @for (day of daysOfWeekList; track day.value) {
+                          <option [value]="day.value">{{ day.label }}</option>
+                        }
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="input-group" style="flex: 1">
+                    <div class="input-wrapper">
+                      <input type="time" formControlName="startTime" />
+                    </div>
+                  </div>
+
+                  <div class="input-group" style="flex: 1">
+                    <div class="input-wrapper">
+                      <input type="time" formControlName="endTime" />
+                    </div>
+                  </div>
+
+                  @if (schedulesFormArray.length > 1) {
+                    <button
+                      type="button"
+                      class="btn-delete-slot"
+                      (click)="removeScheduleSlot($index)"
+                    >
+                      <span class="material-symbols-outlined">delete</span>
+                    </button>
+                  }
+                </div>
+              }
+            </div>
+
+            <button type="button" class="btn-add-schedule" (click)="addScheduleSlot()">
+              <span class="material-symbols-outlined">add</span> Añadir otro bloque horario
+            </button>
+
+            <div class="action-buttons-group" style="margin-top: 20px">
+              <button type="button" class="btn-secondary" (click)="prevStep()">Volver</button>
+              <button type="submit" class="btn-login" style="flex: 2; background: #22c55e">
+                Finalizar Registro
+              </button>
+            </div>
+          </div>
+        }
+      </form>
+
+      <div class="login-footer">
+        Desarrollado para testing funcional e ingresos controlados de demostración.
+      </div>
+    </div>
+
+    <!-- Lado Visual Animado -->
+    <div class="login-visual-side">
+      <div class="visual-content">
+        <h3>Entorno Demo Simplificado</h3>
+        <p>
+          Registrando tu usuario y tu materia en simultáneo configuramos tu espacio de simulación de
+          manera automática.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

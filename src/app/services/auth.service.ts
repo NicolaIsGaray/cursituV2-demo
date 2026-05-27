@@ -31,7 +31,7 @@ export class AuthService {
   );
   userRole$ = this.roleSubject.asObservable();
 
-  constructor() {}
+  constructor(private activeRoute: Router) {}
 
   login(user: LoginData): Observable<User> {
   return this.http.post<User>(`${this.apiUrl}/login`, user).pipe(
@@ -70,6 +70,7 @@ export class AuthService {
 
   getAuthStatus() {
     if (!this.currentUserValue) {
+      if (this.activeRoute.url !== '/register-professor') return;
       this.route.navigate(['/login']);
       return;
     }

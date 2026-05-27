@@ -1,7 +1,7 @@
 /* --- CSS ADAPTADO PARA NETBOOKS/RESPONSIVE --- */
 
 .login-page {
-  min-height: 100vh; /* Permite scroll si el teclado virtual o la pantalla es muy pequeña */
+  min-height: 96vh; /* Permite scroll si el teclado virtual o la pantalla es muy pequeña */
   display: flex;
   align-items: center;
   justify-content: center;

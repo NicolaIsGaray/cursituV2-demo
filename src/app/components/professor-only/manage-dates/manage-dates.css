@@ -372,8 +372,16 @@
 
   .date-input-wrapper,
   .action-buttons {
-    width: 100%;
+    width: 64%;
     justify-content: center;
+  }
+
+  .date-display-editable {
+    width: 100%;
+  }
+
+  .input-titulo-dinamico {
+    width: 32vw;
   }
 
   .action-buttons {

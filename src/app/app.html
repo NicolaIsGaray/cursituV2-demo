@@ -2,7 +2,7 @@
   class="main-layout"
   [class.no-navigation]="!(uiService.navigationVisible$ | async)"
   [class.sidebar-open]="isSidebarOpen"
-  *ngIf="!isLoginPage()"
+  *ngIf="!isLoginPage() && !isRegisterTeacherPage()"
 >
   <!-- Overlay para cerrar el menú en móvil -->
   <div class="sidebar-overlay" (click)="isSidebarOpen = false"></div>
@@ -10,7 +10,7 @@
   <aside class="sidebar" *ngIf="uiService.navigationVisible$ | async">
     <div class="app-title">
       <span class="material-symbols-outlined logo-icon">grid_view</span>
-      <h4>CursITU</h4>
+      <h4>CursITU (DEMO 1.0)</h4>
       <!-- Botón de cierre para móvil -->
       <button class="close-sidebar-mobile" (click)="isSidebarOpen = false">
         <span class="material-symbols-outlined">close</span>
@@ -59,12 +59,6 @@
           </a>
         </li>
         <li routerLinkActive="active">
-          <a routerLink="/transmission-lobby" (click)="isSidebarOpen = false">
-            <span class="material-symbols-outlined">cast</span>
-            <p>Presentaciones</p>
-          </a>
-        </li>
-        <li routerLinkActive="active">
           <a routerLink="/pending-tasks" (click)="isSidebarOpen = false">
             <span class="material-symbols-outlined">grid_view</span>
             <p>Tareas Pendientes</p>
@@ -88,12 +82,6 @@
           <a routerLink="/subjects" (click)="isSidebarOpen = false">
             <span class="material-symbols-outlined">widgets</span>
             <p>Mis Materias</p>
-          </a>
-        </li>
-        <li routerLinkActive="active">
-          <a routerLink="/transmission-lobby" (click)="isSidebarOpen = false">
-            <span class="material-symbols-outlined">cast</span>
-            <p>Presentaciones</p>
           </a>
         </li>
         <li routerLinkActive="active">
@@ -150,10 +138,6 @@
           </div>
         </div>
       </div>
-      <a class="settings-btn" routerLink="/configuration" (click)="isSidebarOpen = false">
-        <span class="material-symbols-outlined">settings</span>
-        <p>Configuración</p>
-      </a>
     </div>
   </aside>
 
@@ -194,12 +178,6 @@
             <hr class="dropdown-divider" />
             <ul>
               <li>
-                <a routerLink="/configuration" (click)="isDropdownOpen = false">
-                  <span class="material-symbols-outlined">settings</span>
-                  Ajustes
-                </a>
-              </li>
-              <li>
                 <a (click)="this.authService.logout()" class="logout-item">
                   <span class="material-symbols-outlined">logout</span>
                   Cerrar Sesión
@@ -217,6 +195,8 @@
   </main>
 </div>
 
-<div *ngIf="isLoginPage()" class="full-screen-login">
-  <router-outlet></router-outlet>
-</div>
+@if (isLoginPage() || isRegisterTeacherPage()) {
+  <div class="full-screen-login">
+    <router-outlet></router-outlet>
+  </div>
+}

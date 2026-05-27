@@ -162,6 +162,7 @@
 /* ESTADO VACÍO */
 .empty-state {
   height: 100%;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -169,6 +170,7 @@
   color: #ccc;
   border: 2px dashed #eee;
   border-radius: 20px;
+  padding: 20px;
 }
 
 .empty-state span {
@@ -252,20 +254,19 @@
   text-align: left;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
 
-  /* Efecto al pasar el mouse o enfocar con teclado */
-  &:hover,
-  &:focus {
-    background-color: #f8fafc;
-    border-color: #cbd5e1;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    outline: none;
-  }
+.subject-card:hover,
+.subject-card:focus {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
 
-  &:active {
-    transform: translateY(0);
-  }
+.subject-card:active {
+  transform: translateY(0);
 }
 
 /* Contenedor circular */
@@ -302,45 +303,43 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  background-color: #fff5f5; /* Fondo rojizo muy suave */
-  border-left: 5px solid #dc3545; /* Barra lateral roja de peligro */
+  background-color: #fff5f5;
+  border-left: 5px solid #dc3545;
   border-radius: 4px;
   padding: 16px 20px;
   margin: 16px 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Alineación de la Cabecera (Icono + Texto ¡ADVERTENCIA!) */
 .warning-content > span:nth-child(1) {
-  color: #dc3545; /* Color del icono */
+  color: #dc3545;
   font-size: 28px;
   align-self: flex-start;
 }
 
 .warning-content > span:nth-child(2) {
-  color: #bd2130; /* Rojo oscuro para el título */
+  color: #bd2130;
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  margin-top: -4px; /* Ajuste de alineación con el icono */
+  margin-top: -4px;
 }
 
 /* Bloque de Mensajes */
 .warning-message {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Separación entre párrafos */
+  gap: 10px;
 }
 
 .warning-message p {
   margin: 0;
-  color: #495057; /* Gris oscuro para legibilidad */
+  color: #495057;
   font-size: 14px;
   line-height: 1.5;
 }
 
-/* Énfasis en el texto crítico */
 .warning-message strong {
   color: #dc3545;
   background-color: #ffe3e3;
@@ -349,11 +348,10 @@
   font-weight: 700;
 }
 
-/* Párrafo de Recomendación (Opcional: un tono un poco más sutil) */
 .warning-message p:last-child {
-  color: #6c757d; /* Gris interimedio */
+  color: #6c757d;
   font-size: 13.5px;
-  border-top: 1px solid #f8d7da; /* Línea divisoria muy tenue */
+  border-top: 1px solid #f8d7da;
   padding-top: 8px;
   margin-top: 4px;
 }
@@ -404,11 +402,6 @@
   display: inline-block;
 }
 
-.subject-name {
-  font-weight: 500;
-  color: #495057;
-}
-
 .suspended-actions {
   display: flex;
   gap: 8px;
@@ -440,7 +433,7 @@
 }
 
 /* ==========================================================================
-   SECCIÓN: CONTENEDOR AGENDA / HORARIOS (MODIFICADO)
+   SECCIÓN: CONTENEDOR AGENDA / HORARIOS
    ========================================================================== */
 .schedule-section {
   border-top: 1px dashed #e2e8f0;
@@ -554,7 +547,11 @@
   grid-column: span 2;
 }
 
-/* RESPONSIVE NETBOOK */
+/* ==========================================================================
+   MEDIA QUERIES (RESPONSIVE ADAPTADO)
+   ========================================================================== */
+
+/* Ajustes para Netbooks y pantallas medianas */
 @media (max-width: 1024px) {
   .admin-container {
     grid-template-columns: 260px 1fr;
@@ -573,19 +570,110 @@
   }
 }
 
-/* Ajustes para Netbook de baja altura */
+/* Ajustes para Netbook de baja altura vertical */
 @media (max-height: 600px) {
   .admin-form {
     padding: 20px;
     gap: 15px;
   }
-
   .color-input {
     width: 30px;
     height: 30px;
   }
-
   .form-header {
     padding: 15px 25px;
+  }
+}
+
+/* Solución crítica para Dispositivos Móviles (Teléfonos y Tablets Verticales) */
+@media (max-width: 768px) {
+  .admin-container {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Permite scroll vertical libre en el viewport general */
+    gap: 15px;
+    padding: 5px;
+  }
+
+  .selection-panel {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .section-description {
+    margin-bottom: 15px;
+  }
+
+  .admin-actions-list {
+    flex-direction: row; /* Botones horizontales compactos */
+    flex-wrap: wrap; /* Permite saltos de línea si no entran */
+    gap: 8px;
+  }
+
+  .admin-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .admin-btn span {
+    font-size: 18px;
+  }
+
+  .admin-btn:hover {
+    transform: none; /* Quita el efecto hover lateral molesto en móviles */
+  }
+
+  .action-panel {
+    height: auto;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .admin-form {
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .form-header {
+    padding: 15px 20px;
+  }
+
+  /* Modificación adaptativa de filas e inputs de horarios */
+  .schedule-row-item {
+    flex-direction: column; /* Apila los controles de horarios de esa fila */
+    align-items: stretch;
+    gap: 10px;
+    position: relative;
+  }
+
+  .schedule-controls-grid {
+    grid-template-columns: 1fr; /* Cada input ocupa su propia línea */
+    gap: 8px;
+  }
+
+  .time-input-group {
+    justify-content: space-between;
+  }
+
+  .time-picker-input {
+    max-width: 60%; /* Evita que los inputs numéricos se desborden de la tarjeta */
+  }
+
+  .btn-remove-slot {
+    align-self: flex-end; /* Posiciona el botón de borrar abajo a la derecha */
+    padding: 8px;
+  }
+
+  .subject-list {
+    max-width: 100%;
+  }
+
+  .radio-group {
+    flex-direction: column; /* Apila checkboxes del periodo académico */
+    gap: 8px;
   }
 }

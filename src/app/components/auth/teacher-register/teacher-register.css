@@ -1,0 +1,366 @@
+/* --- CSS ADAPTADO PARA NETBOOKS/RESPONSIVE --- */
+
+.login-page {
+  min-height: 96vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f7fe;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 10px;
+}
+
+.login-container {
+  display: flex;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 540px;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
+/* Lado del Formulario */
+.login-form-side {
+  flex: 1;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #3f66cc;
+  margin-bottom: 20px;
+}
+
+.brand-header h1 {
+  font-weight: 900;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.login-content h2 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: #1e293b;
+}
+.login-content p {
+  color: #64748b;
+  font-weight: 600;
+  margin-bottom: 20px;
+  font-size: 0.85rem;
+}
+
+.input-group {
+  margin-bottom: 12px;
+}
+.input-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #444;
+  font-size: 0.85rem;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #f0f2f7;
+  border-radius: 10px;
+  padding: 0 12px;
+  border: 2px solid transparent;
+  transition: 0.3s;
+}
+
+.input-wrapper input {
+  border: none;
+  background: none;
+  padding: 11px;
+  width: 100%;
+  outline: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #334155;
+}
+
+/* Reset de Select Nativo para integrarse al look and feel */
+.native-select {
+  border: none;
+  background: none;
+  padding: 11px;
+  width: 100%;
+  outline: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #334155;
+  cursor: pointer;
+}
+
+.input-row {
+  display: flex;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   ESTRUCTURA DEL STEPPER (INDICADOR DE PASOS)
+   ========================================================================== */
+.stepper-indicator {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  gap: 8px;
+}
+
+.stepper-indicator .step {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 800;
+  transition: all 0.3s ease;
+}
+
+.stepper-indicator .step.active {
+  background: #3f66cc;
+  color: white;
+}
+
+.stepper-indicator .step-line {
+  flex: 1;
+  height: 3px;
+  background: #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.stepper-indicator .step-line.active {
+  background: #3f66cc;
+}
+
+/* ==========================================================================
+   ELEMENTOS DINÁMICOS DE HORARIOS CORREGIDOS
+   ========================================================================== */
+.schedules-scroll-container {
+  max-height: 230px; /* Incrementado para contener las tarjetas en móvil */
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 10px;
+}
+
+.schedule-form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+  background: #ffffff;
+  transition: background-color 0.2s;
+}
+
+.schedule-form-row .input-group {
+  margin-bottom: 0;
+  min-width: 0; /* Previene el desborde flex en inputs de tipo time */
+}
+
+.btn-delete-slot {
+  background: #fee2e2;
+  border: none;
+  color: #ef4444;
+  padding: 11px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-delete-slot:hover {
+  background: #fca5a5;
+}
+
+.btn-add-schedule {
+  background: none;
+  border: 2px dashed #cbd5e1;
+  color: #475569;
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: 0.2s;
+}
+
+.btn-add-schedule:hover {
+  border-color: #3f66cc;
+  color: #3f66cc;
+  background: #f8fafc;
+}
+
+/* ==========================================================================
+   BOTONERAS DE ACCIÓN
+   ========================================================================== */
+.action-buttons-group {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btn-login {
+  width: 100%;
+  background: #3f66cc;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-login:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(63, 102, 204, 0.25);
+}
+
+.btn-secondary {
+  flex: 1;
+  background: #f1f5f9;
+  color: #475569;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+}
+
+/* Lado Visual */
+.login-visual-side {
+  flex: 1;
+  background: linear-gradient(135deg, #8742e0 0%, #6a2bc2 100%);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+  color: white;
+}
+
+.visual-content h3 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+  line-height: 1.2;
+}
+.visual-content p {
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.9;
+}
+
+.login-footer {
+  margin-top: 25px;
+  font-size: 0.7rem;
+  color: #aaa;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* --- MEDIA QUERIES ESPECÍFICAS --- */
+
+/* Adaptación para pantallas móviles y colapso de filas de horarios */
+@media (max-width: 550px) {
+  .schedule-form-row {
+    flex-direction: column;
+    align-items: stretch;
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .schedule-form-row .input-group {
+    width: 100%;
+  }
+
+  /* Distribución de las dos horas lado a lado en móvil */
+  .schedule-form-row .input-group:nth-child(2),
+  .schedule-form-row .input-group:nth-child(3) {
+    display: inline-block;
+    width: calc(50% - 5px);
+  }
+  
+  /* Contenedor wrapper para las horas en paralelo */
+  .schedule-form-row {
+    display: block;
+  }
+
+  .schedule-form-row .input-group {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .schedule-form-row .input-group:nth-of-type(2),
+  .schedule-form-row .input-group:nth-of-type(3) {
+    width: calc(50% - 4px);
+    float: left;
+  }
+
+  .schedule-form-row .input-group:nth-of-type(3) {
+    float: right;
+  }
+
+  .btn-delete-slot {
+    width: 100%;
+    clear: both;
+    margin-top: 4px;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 900px) {
+  .login-visual-side {
+    display: none;
+  }
+
+  .login-container {
+    max-width: 460px;
+  }
+}
+
+@media (max-height: 650px) {
+  .login-container {
+    height: auto;
+    min-height: auto;
+  }
+  .login-form-side {
+    padding: 25px;
+  }
+  .brand-header {
+    margin-bottom: 15px;
+  }
+}

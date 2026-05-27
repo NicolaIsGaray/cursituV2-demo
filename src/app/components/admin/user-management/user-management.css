@@ -43,9 +43,14 @@
   text-align: left;
 }
 
-.admin-btn span { font-size: 20px; }
+.admin-btn span {
+  font-size: 20px;
+}
 
-.admin-btn:hover { background: #f0f2f7; transform: translateX(5px); }
+.admin-btn:hover {
+  background: #f0f2f7;
+  transform: translateX(5px);
+}
 
 .checkbox-group-container {
   display: flex;
@@ -72,7 +77,7 @@
   cursor: pointer;
 }
 
-.checkbox-item input[type="checkbox"] {
+.checkbox-item input[type='checkbox'] {
   cursor: pointer;
   width: 16px;
   height: 16px;
@@ -85,9 +90,18 @@
 }
 
 /* Estados activos por tipo */
-.admin-btn.active.create { background: #3f3689; color: white; }
-.admin-btn.active.edit { background: #2ecc71; color: white; }
-.admin-btn.active.delete { background: #e74c3c; color: white; }
+.admin-btn.active.create {
+  background: #3f3689;
+  color: white;
+}
+.admin-btn.active.edit {
+  background: #2ecc71;
+  color: white;
+}
+.admin-btn.active.delete {
+  background: #e74c3c;
+  color: white;
+}
 
 /* PANEL DERECHO */
 .action-panel {
@@ -128,19 +142,19 @@
   text-align: left;
   transition: all 0.2s ease-in-out;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
 
-  /* Efecto al pasar el mouse o enfocar con teclado */
-  &:hover, &:focus {
-    background-color: #f8fafc;
-    border-color: #cbd5e1;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    outline: none;
-  }
+.user-card:hover,
+.user-card:focus {
+  background-color: #f8fafc;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  outline: none;
+}
 
-  &:active {
-    transform: translateY(0);
-  }
+.user-card:active {
+  transform: translateY(0);
 }
 
 /* Avatar circular */
@@ -184,17 +198,23 @@
   letter-spacing: 0.5px;
   background-color: #e2e8f0;
   color: #475569;
+}
 
-  /* Colores dinámicos según el valor del rol */
-  &.admin {
-    background-color: #fee2e2;
-    color: #ef4444;
-  }
+.user-role.admin {
+  background-color: #fee2e2;
+  color: #ef4444;
+}
 
-  &.user, &.usuario {
-    background-color: #dbeafe;
-    color: #3b82f6;
-  }
+.user-role.user,
+.user-role.usuario,
+.user-role.alumno {
+  background-color: #dbeafe;
+  color: #3b82f6;
+}
+
+.user-role.docente {
+  background-color: #e0f2fe;
+  color: #0369a1;
 }
 
 .form-card {
@@ -209,7 +229,10 @@
   color: white;
 }
 
-.form-header h4 { margin: 0; font-size: 1.2rem; }
+.form-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+}
 
 .admin-form {
   padding: 30px;
@@ -260,17 +283,30 @@
   transition: opacity 0.2s;
 }
 
-.btn-submit:hover { opacity: 0.9; }
+.btn-submit:hover {
+  opacity: 0.9;
+}
 
 /* SECCIÓN ELIMINAR */
-.delete-header { background-color: #e74c3c; }
-.delete-content { padding: 30px; }
-.btn-delete { background-color: #e74c3c; width: 100%; }
-.error-focus:focus { border-color: #e74c3c; outline: none; }
+.delete-header {
+  background-color: #e74c3c;
+}
+.delete-content {
+  padding: 30px;
+}
+.btn-delete {
+  background-color: #e74c3c;
+  width: 100%;
+}
+.error-focus:focus {
+  border-color: #e74c3c;
+  outline: none;
+}
 
 /* ESTADO VACÍO */
 .empty-state {
   height: 100%;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -278,15 +314,87 @@
   color: #ccc;
   border: 2px dashed #eee;
   border-radius: 20px;
+  padding: 20px;
 }
 
-.empty-state span { font-size: 64px; }
+.empty-state span {
+  font-size: 64px;
+}
 
-/* RESPONSIVE NETBOOK */
+/* ==========================================================================
+   MEDIA QUERIES ESPECÍFICAS (RESPONSIVE CORREGIDO)
+   ========================================================================== */
+
+/* Ajustes para Netbooks y pantallas medianas */
 @media (max-width: 1024px) {
   .admin-container {
     grid-template-columns: 260px 1fr;
     height: calc(100vh - 100px);
   }
-  .form-row { grid-template-columns: 1fr; gap: 10px; }
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* Solución crítica para Dispositivos Móviles (Teléfonos y Tablets Verticales) */
+@media (max-width: 768px) {
+  .admin-container {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Rompe la restricción de altura fija de la pantalla */
+    gap: 15px;
+    padding: 5px;
+  }
+
+  .selection-panel {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .section-description {
+    margin-bottom: 15px;
+  }
+
+  .admin-actions-list {
+    flex-direction: row; /* Coloca los botones de acción lado a lado */
+    flex-wrap: wrap; /* Permite que bajen si el móvil es muy angosto */
+    gap: 8px;
+  }
+
+  .admin-btn {
+    flex: 1;
+    min-width: 120px; /* Evita que se colapsen las etiquetas de texto */
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .admin-btn span {
+    font-size: 18px;
+  }
+
+  .admin-btn:hover {
+    transform: none; /* Desactiva el desplazamiento lateral en móviles */
+  }
+
+  .action-panel {
+    height: auto;
+    overflow-y: visible; /* El scroll ahora lo maneja la página principal */
+    padding-right: 0;
+  }
+
+  .admin-form {
+    padding: 15px; /* Más compacto en móviles */
+    gap: 15px;
+  }
+
+  .form-header {
+    padding: 15px 20px;
+  }
+
+  .user-list {
+    max-width: 100%; /* El buscador se estira al contenedor global */
+  }
 }

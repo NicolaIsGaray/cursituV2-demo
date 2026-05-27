@@ -43,13 +43,28 @@
   text-align: left;
 }
 
-.admin-btn span { font-size: 20px; }
+.admin-btn span {
+  font-size: 20px;
+}
 
-.admin-btn:hover { background: #f0f2f7; transform: translateX(5px); }
+.admin-btn:hover {
+  background: #f0f2f7;
+  transform: translateX(5px);
+}
 
 /* Estados activos por tipo */
-.admin-btn.active.create { background: #3f3689; color: white; }
-.admin-btn.active.delete { background: #e74c3c; color: white; }
+.admin-btn.active.create {
+  background: #3f3689;
+  color: white;
+}
+.admin-btn.active.edit {
+  background: #2ecc71;
+  color: white;
+}
+.admin-btn.active.delete {
+  background: #e74c3c;
+  color: white;
+}
 
 /* PANEL DERECHO */
 .action-panel {
@@ -70,7 +85,10 @@
   color: white;
 }
 
-.form-header h4 { margin: 0; font-size: 1.2rem; }
+.form-header h4 {
+  margin: 0;
+  font-size: 1.2rem;
+}
 
 .admin-form {
   padding: 30px;
@@ -121,17 +139,30 @@
   transition: opacity 0.2s;
 }
 
-.btn-submit:hover { opacity: 0.9; }
+.btn-submit:hover {
+  opacity: 0.9;
+}
 
 /* SECCIÓN ELIMINAR */
-.delete-header { background-color: #e74c3c; }
-.delete-content { padding: 30px; }
-.btn-delete { background-color: #e74c3c; width: 100%; }
-.error-focus:focus { border-color: #e74c3c; outline: none; }
+.delete-header {
+  background-color: #e74c3c;
+}
+.delete-content {
+  padding: 30px;
+}
+.btn-delete {
+  background-color: #e74c3c;
+  width: 100%;
+}
+.error-focus:focus {
+  border-color: #e74c3c;
+  outline: none;
+}
 
 /* ESTADO VACÍO */
 .empty-state {
   height: 100%;
+  min-height: 200px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,9 +170,12 @@
   color: #ccc;
   border: 2px dashed #eee;
   border-radius: 20px;
+  padding: 20px;
 }
 
-.empty-state span { font-size: 64px; }
+.empty-state span {
+  font-size: 64px;
+}
 
 .textarea-field {
   resize: none;
@@ -163,40 +197,101 @@
   font-weight: 600;
 }
 
-/* Optimización para Netbooks (Pantalla corta) */
+/* ==========================================================================
+   MEDIA QUERIES (RESPONSIVE ADAPTADO)
+   ========================================================================== */
+
+/* Ajustes para Netbooks y pantallas medianas (Resolución de ancho) */
+@media (max-width: 1024px) {
+  .admin-container {
+    grid-template-columns: 260px 1fr;
+    height: calc(100vh - 100px);
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+/* Optimización para Netbooks basadas en baja altura de pantalla */
 @media (max-height: 600px) {
   .textarea-field {
     height: 120px; /* Reducción de altura para evitar scroll excesivo */
   }
-  
-  .admin-form {
-    padding: 20px;
-    gap: 12px;
-  }
-  
-  .form-header {
-    padding: 15px 25px;
-  }
-}
 
-/* Estilos de botones de acción específicos */
-.admin-btn.active.create { background: #3f3689; color: white; }
-.admin-btn.active.edit { background: #2ecc71; color: white; }
-.admin-btn.active.delete { background: #e74c3c; color: white; }
-
-/* Ajustes para Netbook */
-@media (max-height: 600px) {
   .admin-form {
     padding: 20px;
     gap: 15px;
   }
-  
+
+  .form-header {
+    padding: 15px 25px;
+  }
+
   .color-input {
     width: 30px;
     height: 30px;
   }
-  
+}
+
+/* Solución crítica para Dispositivos Móviles (Teléfonos y Tablets Verticales) */
+@media (max-width: 768px) {
+  .admin-container {
+    display: flex;
+    flex-direction: column;
+    height: auto; /* Permite scroll vertical libre en el viewport general */
+    gap: 15px;
+    padding: 5px;
+  }
+
+  .selection-panel {
+    padding: 15px;
+    border-radius: 15px;
+  }
+
+  .section-description {
+    margin-bottom: 15px;
+  }
+
+  .admin-actions-list {
+    flex-direction: row; /* Coloca los botones uno al lado del otro */
+    flex-wrap: wrap; /* Permite saltos si el espacio es muy reducido */
+    gap: 8px;
+  }
+
+  .admin-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  .admin-btn span {
+    font-size: 18px;
+  }
+
+  .admin-btn:hover {
+    transform: none; /* Desactiva el desvío horizontal molesto en pantallas táctiles */
+  }
+
+  .action-panel {
+    height: auto;
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .admin-form {
+    padding: 15px;
+    gap: 15px;
+  }
+
   .form-header {
-    padding: 15px 25px;
+    padding: 15px 20px;
+  }
+
+  .textarea-field {
+    height: 140px; /* Altura controlada óptima para la lectura en smartphones */
   }
 }

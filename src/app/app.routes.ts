@@ -26,10 +26,15 @@ import { SubjectManagement } from './components/admin/subject-management/subject
 import { AnnouncementPanel } from './components/admin/announcement-panel/announcement-panel';
 import { ManageAssignments } from './components/professor-only/manage-assignments/manage-assignments';
 import { AssignmentPreview } from './components/professor-only/assignment-preview/assignment-preview';
+import { TeacherRegister } from './components/auth/teacher-register/teacher-register';
 
 export const routes: Routes = [
     { path: '', component: Home, pathMatch: 'full' },
     { path: 'home', component: Home },
+
+    // DEMO
+    { path: 'register-professor', component: TeacherRegister },
+
     { path: 'login', component: Login },
     { path: 'subjects', component: SubjectsList },
     { path: 'groups', component: Groups },
