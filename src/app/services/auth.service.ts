@@ -70,7 +70,7 @@ export class AuthService {
 
   getAuthStatus() {
     if (!this.currentUserValue) {
-      if (this.activeRoute.url !== '/register-professor') return;
+      if (this.activeRoute.url === '/register-professor') return;
       this.route.navigate(['/login']);
       return;
     }
