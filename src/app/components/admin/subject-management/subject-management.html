@@ -1,0 +1,365 @@
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="admin-container" *ngIf="rol === 'ADMIN'">
+    <div class="selection-panel">
+      <h3>Gestión de Materias</h3>
+      <p class="section-description">
+        Configura las materias, asigna docentes y define periodos académicos.
+      </p>
+
+      <div class="admin-actions-list">
+        <button
+          class="admin-btn create"
+          [class.active]="mode === 'crear'"
+          (click)="changeMode('crear')"
+        >
+          <span class="material-symbols-outlined">library_add</span>
+          Nueva Materia
+        </button>
+
+        <button
+          class="admin-btn edit"
+          [class.active]="mode === 'editar'"
+          (click)="changeMode('editar')"
+        >
+          <span class="material-symbols-outlined">edit_note</span>
+          Editar Materia
+        </button>
+
+        <button
+          class="admin-btn delete"
+          [class.active]="mode === 'suspender'"
+          (click)="changeMode('suspender')"
+        >
+          <span class="material-symbols-outlined">pause</span>
+          Suspender Materia
+        </button>
+      </div>
+    </div>
+
+    <div class="action-panel">
+      <div class="form-card" *ngIf="mode === 'crear' || mode === 'editar'">
+        <header
+          class="form-header"
+          [style.background-color]="mode === 'crear' ? 'var(--primary-purple)' : '#2ecc71'"
+        >
+          <h4>{{ mode === 'crear' ? 'Configurar Materia' : 'Actualizar Materia' }}</h4>
+        </header>
+
+        <div class="admin-form" *ngIf="mode === 'editar'">
+          <div class="form-group">
+            <label>Seleccionar Materia a editars</label>
+            <ul class="subject-list">
+              <li
+                *ngFor="let subject of subjectList$ | async"
+                [id]="subject.id"
+                class="subject-item"
+              >
+                <button type="button" class="subject-card" (click)="selectSubjectToEdit(subject)">
+                  <div class="subject-color" [style.background-color]="subject.color">
+                    {{ subject.subject_name.charAt(0).toUpperCase() }}
+                  </div>
+
+                  <div class="subject-info">
+                    <span class="subject-name">{{ subject.subject_name }}</span>
+                  </div>
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <form class="admin-form" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre de la Materia *</label>
+              <input
+                type="text"
+                placeholder="Ej: Metodología y Testing"
+                id="name"
+                formControlName="name"
+                class="admin-input"
+                autocomplete="off"
+              />
+              <span
+                *ngIf="
+                  subjectForm.get('name')?.touched && subjectForm.get('name')?.errors?.['required']
+                "
+                style="color: var(--error-red)"
+              >
+                Porfavor, ingrese un nombre.
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label>Identificador Visual (Color)</label>
+              <div class="color-picker-wrapper">
+                <input type="color" class="color-input" id="color" formControlName="color" />
+                <span class="color-hint"
+                  >Este color se verá principalmente en las interfaces de la materia. Evita colores
+                  fuertes.</span
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Profesor Titular (Seleccionar uno) *</label>
+            <select class="admin-input" formControlName="professor">
+              <option ngValue="" disabled selected>Seleccione un docente...</option>
+              <option *ngFor="let p of professorList$ | async" [ngValue]="p.id" id="professor">
+                {{ p.name }} - DNI: {{ p.dni }}
+              </option>
+            </select>
+            <span
+              *ngIf="
+                subjectForm.get('professor')?.touched &&
+                subjectForm.get('professor')?.errors?.['required']
+              "
+              style="color: var(--error-red)"
+            >
+              Porfavor, elige un profesor.
+            </span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Año Correspondiente *</label>
+              <select class="admin-input" formControlName="year">
+                <option *ngFor="let year of yearList" [ngValue]="year">{{ year }}° Año</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>Periodos Académicos *</label>
+              <span class="color-hint"
+                >Selecciona ambos si la materia es anual o elige uno solo si es de
+                cuatrimestre.</span
+              >
+              <div
+                class="radio-group"
+                *ngFor="let control of periodFromArray.controls; let i = index"
+                formArrayName="periods"
+              >
+                <input type="checkbox" [formControlName]="i" [id]="'period-' + i" />
+                <label [for]="'period-' + i" class="radio-option"
+                  >{{ periodList[i] }}° Cuatrimestre</label
+                >
+              </div>
+            </div>
+
+            <div class="form-group full-width schedule-section">
+              <label>Agenda / Horarios de Cursada *</label>
+              <span class="color-hint"
+                >Establezca los días y horas semanales de dictado obligatorios.</span
+              >
+
+              <div class="schedule-container">
+                <button type="button" class="btn-add-schedule" (click)="addScheduleSlot()">
+                  <span>Agregar Horario</span>
+                  <span class="material-symbols-outlined">add</span>
+                </button>
+
+                <div formArrayName="schedules" class="schedule-list-wrapper">
+                  <div
+                    *ngFor="let slot of schedulesFormArray.controls; let idx = index"
+                    [formGroupName]="idx"
+                    class="schedule-row-item"
+                  >
+                    <div class="schedule-controls-grid">
+                      <select formControlName="day" class="admin-input schedule-dropdown">
+                        <option value="" disabled selected>Seleccione un día...</option>
+                        <option *ngFor="let d of daysOfWeekList" [value]="d.value">
+                          {{ d.label }}
+                        </option>
+                      </select>
+
+                      <div class="time-input-group">
+                        <label>Desde:</label>
+                        <input
+                          type="time"
+                          formControlName="startTime"
+                          class="admin-input time-picker-input"
+                        />
+                      </div>
+
+                      <div class="time-input-group">
+                        <label>Hasta:</label>
+                        <input
+                          type="time"
+                          formControlName="endTime"
+                          class="admin-input time-picker-input"
+                        />
+                      </div>
+                    </div>
+
+                    <button type="button" class="btn-remove-slot" (click)="removeScheduleSlot(idx)">
+                      <span class="material-symbols-outlined">delete</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <span
+                *ngIf="subjectForm.get('schedules')?.touched && schedulesFormArray.length === 0"
+                style="color: var(--error-red); font-size: 0.85rem; font-weight: 600"
+              >
+                Por favor, defina al menos un horario de cursada obligatorio.
+              </span>
+            </div>
+          </div>
+
+          <button
+            class="btn-submit"
+            [style.background-color]="mode === 'crear' ? 'var(--primary-purple)' : '#2ecc71'"
+          >
+            {{ mode === 'crear' ? 'Crear Materia' : 'Guardar Cambios' }}
+          </button>
+        </form>
+      </div>
+
+      <div class="form-card delete-card" *ngIf="mode === 'suspender'">
+        <header class="form-header delete-header">
+          <h4>Suspender Materia</h4>
+        </header>
+        <div class="delete-content">
+          <div class="warning-content">
+            <div style="display: flex; align-items: center; gap: 8px">
+              <span class="material-symbols-outlined">warning</span>
+              <span style="font-weight: 700; color: #bd2130; letter-spacing: 0.5px"
+                >¡ADVERTENCIA!</span
+              >
+            </div>
+
+            <div class="warning-message">
+              <p>
+                Esta acción incluye la suspención <strong>TOTAL</strong> de la materia y sus cursos
+                creados (Clases, Parciales, Cuestionarios y demás información).
+              </p>
+              <p>
+                Recomendación: Si la materia lleva tiempo en vigencia o ésta acción se toma a mitad
+                de año, por favor, comunicate con el profesor asignado para evitar malentendidos.
+              </p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Seleccionar Materia a dar de baja</label>
+            <select class="admin-input error-focus" (change)="selectSubjectToSuspend($event)">
+              <option value="" selected disabled>Selecciona una materia...</option>
+              <option *ngFor="let subject of subjectList$ | async" [value]="subject.id">
+                {{ subject.subject_name }}
+              </option>
+            </select>
+          </div>
+
+          @if (subjectToSuspendSel) {
+            <button class="btn-submit btn-delete" (click)="suspendSubject()">
+              Confirmar Suspensión
+            </button>
+          }
+
+          @if (suspendedSubjectList$ | async; as suspendedSubjects) {
+            @if (suspendedSubjects.length > 0) {
+              <div class="suspended-section" style="margin: 20px 0">
+                <label
+                  class="suspended-title"
+                  style="
+                    font-weight: 600;
+                    color: #6c757d;
+                    font-size: 0.9rem;
+                    margin-bottom: 8px;
+                    display: block;
+                  "
+                >
+                  Materias Suspendidas Actualmente
+                </label>
+                <div
+                  class="suspended-list"
+                  style="
+                    background-color: #f8f9fa;
+                    border: 1px solid #dee2e6;
+                    border-radius: 6px;
+                    max-height: 200px;
+                    overflow-y: auto;
+                  "
+                >
+                  @for (sub of suspendedSubjects; track sub.id) {
+                    <div
+                      class="suspended-item"
+                      style="
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        padding: 10px 14px;
+                        border-bottom: 1px solid #dee2e6;
+                      "
+                    >
+                      <div
+                        class="suspended-info"
+                        style="display: flex; align-items: center; gap: 10px"
+                      >
+                        <span
+                          class="color-indicator"
+                          [style.background-color]="sub.color"
+                          style="
+                            width: 12px;
+                            height: 12px;
+                            border-radius: 50%;
+                            display: inline-block;
+                          "
+                        ></span>
+                        <span class="subject-name" style="font-weight: 500; color: #495057">{{
+                          sub.subject_name
+                        }}</span>
+                      </div>
+                      <div class="suspended-actions" style="display: flex; gap: 8px">
+                        <button
+                          type="button"
+                          class="action-btn btn-enable"
+                          (click)="reactivateSubject(sub)"
+                          title="Habilitar Materia"
+                          style="
+                            background: none;
+                            border: none;
+                            cursor: pointer;
+                            color: #28a745;
+                            display: flex;
+                            align-items: center;
+                            padding: 4px;
+                          "
+                        >
+                          <span class="material-symbols-outlined">check_circle</span>
+                        </button>
+                        <button
+                          type="button"
+                          class="action-btn btn-hard-delete"
+                          (click)="deleteSubject(sub)"
+                          title="Eliminar Permanentemente"
+                          style="
+                            background: none;
+                            border: none;
+                            cursor: pointer;
+                            color: #dc3545;
+                            display: flex;
+                            align-items: center;
+                            padding: 4px;
+                          "
+                        >
+                          <span class="material-symbols-outlined">delete_forever</span>
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="!mode">
+        <span class="material-symbols-outlined">auto_stories</span>
+        <p>Gestión de currícula académica</p>
+      </div>
+    </div>
+  </div>
+</main>

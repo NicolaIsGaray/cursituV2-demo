@@ -1,0 +1,120 @@
+<main *ngIf="authService.userRole$ | async as rol">
+  <nav class="top-nav">
+    <button class="btn-back" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Regresar
+    </button>
+  </nav>
+
+  <div class="materias-container" *ngIf="rol === 'DOCENTE'">
+    <h2>Materias</h2>
+
+    <div class="materias-wrapper">
+      @for (subjectP of professorSubjects$ | async; track subjectP.id) {
+        <div class="subject-row-container">
+          <div class="materia-row">
+            <div
+              class="materia-card main-clickable"
+              (click)="navigateToPanel('/professor-panel', subjectP.id!)"
+              [style.background-color]="subjectP.color"
+            >
+              <div class="materia-info">
+                <h3>{{ subjectP.subject_name | uppercase }}</h3>
+                <p>
+                  Docente: <span>{{ userData.name }}</span>
+                </p>
+              </div>
+            </div>
+
+            <button
+              class="schedule-action-btn"
+              [class.active]="expandedSubjectId === subjectP.id"
+              (click)="toggleSchedule(subjectP.id!, $event)"
+              title="Ver Horarios"
+            >
+              <span class="material-symbols-outlined">schedule</span>
+              <span class="btn-text">Horarios</span>
+            </button>
+          </div>
+
+          <div class="schedule-accordion-panel" [class.open]="expandedSubjectId === subjectP.id">
+            <div class="accordion-content">
+              <h4>Cronograma de Cursada</h4>
+              <div class="schedule-grid">
+                @for (slot of subjectP.schedule; track slot.day + slot.startTime) {
+                  <div class="schedule-item-badge">
+                    <span class="material-symbols-outlined">calendar_today</span>
+                    <span class="day-name">{{ translateDayToSpanish(slot.day) }}</span>
+                    <span class="time-range">{{ slot.startTime }} hs - {{ slot.endTime }} hs</span>
+                  </div>
+                } @empty {
+                  <p class="no-schedules-text">
+                    Esta materia no tiene horarios asignados asignados todavía.
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="subjects-container" *ngIf="rol === 'ALUMNO'">
+    <h2>Materias En Curso</h2>
+    <div class="subjects-card" *ngIf="subjectsWithProfessors$ | async as subjects">
+      <div class="empty-subjects-state" *ngIf="subjects.length === 0">
+        <span class="material-symbols-outlined">auto_stories</span>
+        <p>No te encuentras matriculado en ninguna materia todavía.</p>
+      </div>
+
+      @for (subject of subjects; track subject.id) {
+        <div class="subject-row-container">
+          <div class="subject-row">
+            <div
+              class="subject-main main-clickable"
+              [style.background-color]="subject.color"
+              (click)="navigateToClassroom('/current-classroom', subject.classroom_id!)"
+            >
+              <div class="subject-info">
+                <h3>{{ subject.subject_name | uppercase }}</h3>
+                <p>
+                  Docente: <span>{{ subject.professor_name }}</span>
+                </p>
+              </div>
+            </div>
+
+            <button
+              class="schedule-action-btn"
+              [class.active]="expandedSubjectId === subject.id"
+              (click)="toggleSchedule(subject.id!, $event)"
+              title="Ver Horarios"
+            >
+              <span class="material-symbols-outlined">schedule</span>
+              <span class="btn-text">Horarios</span>
+            </button>
+          </div>
+
+          <div class="schedule-accordion-panel" [class.open]="expandedSubjectId === subject.id">
+            <div class="accordion-content">
+              <h4>Cronograma de Cursada</h4>
+              <div class="schedule-grid">
+                @for (slot of subject.schedule; track slot.day + slot.startTime) {
+                  <div class="schedule-item-badge">
+                    <span class="material-symbols-outlined">calendar_today</span>
+                    <span class="day-name">{{ translateDayToSpanish(slot.day) }}</span>
+                    <span class="time-range">{{ slot.startTime }} hs - {{ slot.endTime }} hs</span>
+                  </div>
+                } @empty {
+                  <p class="no-schedules-text">
+                    Esta materia no tiene horarios configurados asignados todavía.
+                  </p>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</main>

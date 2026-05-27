@@ -1,0 +1,89 @@
+.not-found-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f7fe;
+  color: #333;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.error-code {
+  font-size: 10rem;
+  font-weight: 900;
+  color: #3f66cc;
+  margin: 0;
+  line-height: 1;
+  text-shadow: 10px 10px 0px rgba(63, 102, 204, 0.1);
+}
+
+.divider {
+  width: 100px;
+  height: 8px;
+  background: #ff912c;
+  margin: 20px auto;
+  border-radius: 4px;
+}
+
+.text-section h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.text-section p {
+  font-weight: 600;
+  color: #666;
+  max-width: 500px;
+}
+
+code {
+  background: #eef2ff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #3f66cc;
+}
+
+.actions {
+  margin-top: 40px;
+  display: flex;
+  gap: 15px;
+}
+
+.btn-home, .btn-back {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.3s;
+  border: none;
+}
+
+.btn-home {
+  background: #3f66cc;
+  color: white;
+}
+
+.btn-home:hover { background: #3355aa; }
+
+.btn-back {
+  background: white;
+  color: #333;
+  border: 2px solid #ddd;
+}
+
+.btn-back:hover { background: #f0f0f0; }
+
+.bg-decoration {
+  position: absolute;
+  bottom: 20px;
+  opacity: 0.3;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+}

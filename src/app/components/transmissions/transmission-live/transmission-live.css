@@ -1,0 +1,226 @@
+/* === RESET Y BASE === */
+:host-context(.view-container) {
+  padding: 0;
+}
+
+:host {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  background-color: #050505;
+  overflow: hidden;
+}
+
+.live-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* === HEADER ESTILO STREAMING === */
+.live-header {
+  background-color: #1a1a1a;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+  color: white;
+  border-bottom: 1px solid #333;
+  z-index: 10;
+}
+
+.brand {
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #5246a5;
+}
+
+.header-center {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+}
+
+.live-text {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #e74c3c;
+}
+
+.live-indicator .dot {
+  width: 8px;
+  height: 8px;
+  background-color: #e74c3c;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background: #444;
+}
+
+.group-name {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #eee;
+}
+
+.btn-exit {
+  background-color: #2a2a2a;
+  color: white;
+  border: 1px solid #444;
+  padding: 8px 18px;
+  border-radius: 6px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-exit:hover {
+  background-color: #c00000;
+  border-color: #c00000;
+}
+
+/* === ÁREA DEL VISOR (AUTO-AJUSTABLE) === */
+.viewer-area {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: radial-gradient(circle, #1a1a1a 0%, #000 100%);
+}
+
+.slide-aspect-ratio {
+  width: 100%;
+  max-width: 1200px;
+  aspect-ratio: 16 / 9;
+  background: #111;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.slide-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+}
+
+.slide-placeholder h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  margin: 0;
+  font-weight: 800;
+  opacity: 0.8;
+}
+
+/* === CONTROLES DE DIAPOSITIVA === */
+.slide-controls {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: rgba(0,0,0,0.7);
+  padding: 8px 20px;
+  border-radius: 30px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.slide-aspect-ratio:hover .slide-controls {
+  opacity: 1;
+}
+
+.control-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.control-btn:hover { background: rgba(255,255,255,0.1); }
+
+.slide-counter {
+  font-size: 0.9rem;
+  font-weight: 600;
+  min-width: 60px;
+  text-align: center;
+}
+
+/* === FOOTER === */
+.live-footer {
+  height: 40px;
+  background: #121212;
+  border-top: 1px solid #222;
+  display: flex;
+  align-items: center;
+  padding: 0 30px;
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.viewer-count {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.viewer-count .material-symbols-outlined { font-size: 1.1rem; }
+
+/* === ANIMACIONES Y MEDIA QUERIES === */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.2); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 1024px) {
+  .live-header { height: 60px; padding: 0 20px; }
+  .viewer-area { padding: 10px; }
+  .group-name { font-size: 0.9rem; }
+}
+
+@media (max-width: 768px) {
+  .brand, .divider, .live-footer { display: none; }
+  .header-center { gap: 10px; }
+  .btn-exit span:not(.material-symbols-outlined) { display: none; }
+}
+
+@media (max-height: 500px) {
+  .live-header { height: 45px; }
+  .slide-aspect-ratio { max-height: 80vh; }
+}

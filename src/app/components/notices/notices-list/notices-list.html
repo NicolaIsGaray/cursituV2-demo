@@ -1,0 +1,47 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<div class="avisos-main-container">
+  <h2>Avisos</h2>
+
+  <div class="avisos-card-list">
+    @for (aviso of avisos; track aviso.id) {
+      <div class="aviso-row-item" (click)="verDetalle(aviso.id)">
+        <div class="aviso-status-icon">
+          <span class="material-symbols-outlined">mail</span>
+        </div>
+
+        <div class="aviso-main-info">
+          <p class="aviso-autor-label">
+            Por: <span>{{ aviso.autor }}</span>
+          </p>
+          <p class="aviso-asunto-text">Asunto: "{{ aviso.asunto }}"</p>
+        </div>
+
+        <div class="aviso-meta-side">
+          <p class="aviso-date-stamp">{{ aviso.fecha }}</p>
+          <span class="leer-action-trigger">Leer mensaje</span>
+        </div>
+
+        <button
+          class="aviso-action-view-btn"
+          (click)="verDetalle(aviso.id); $event.stopPropagation()"
+        >
+          <span class="material-symbols-outlined">visibility</span>
+        </button>
+      </div>
+    } @empty {
+      <div class="empty-avisos-fallback">
+        <div class="fallback-icon-container">
+          <span class="material-symbols-outlined">campaign</span>
+        </div>
+        <h4>No hay comunicados activos</h4>
+        <p>Los avisos importantes cargados por los docentes aparecerán listados en esta sección.</p>
+      </div>
+    }
+  </div>
+</div>

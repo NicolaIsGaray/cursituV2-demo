@@ -1,0 +1,138 @@
+/* --- CSS ADAPTADO PARA NETBOOKS/RESPONSIVE --- */
+
+.login-page {
+  min-height: 100vh; /* Permite scroll si el teclado virtual o la pantalla es muy pequeña */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f7fe;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  padding: 10px; /* Margen de seguridad para pantallas pequeñas */
+}
+
+.login-container {
+  display: flex;
+  width: 100%;
+  max-width: 1000px; /* Límite para monitores grandes */
+  min-height: 500px; /* Reducido de 650px */
+  background: white;
+  border-radius: 20px; /* Redondeado ligeramente menor para ganar espacio */
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+}
+
+/* Lado del Formulario */
+.login-form-side {
+  flex: 1;
+  padding: 40px; /* Reducido de 60px para netbooks */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #3f66cc;
+  margin-bottom: 30px; /* Reducido de 50px */
+}
+
+.brand-header h1 { font-weight: 900; font-size: 1.3rem; margin: 0; }
+
+.login-content h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 8px; }
+.login-content p { color: #777; font-weight: 600; margin-bottom: 25px; font-size: 0.9rem; }
+
+.input-group { margin-bottom: 15px; } /* Espaciado más compacto */
+.input-group label { display: block; font-weight: 700; margin-bottom: 5px; color: #444; font-size: 0.85rem; }
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  background: #f0f2f7;
+  border-radius: 10px;
+  padding: 0 12px;
+  border: 2px solid transparent;
+  transition: 0.3s;
+}
+
+.input-wrapper input {
+  border: none;
+  background: none;
+  padding: 12px; /* Reducido de 15px */
+  width: 100%;
+  outline: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.btn-login {
+  width: 100%;
+  background: #3f66cc;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+/* Lado Visual - Ocultar en resoluciones de netbook típicas si es necesario */
+.login-visual-side {
+  flex: 1;
+  background: linear-gradient(135deg, #8742e0 0%, #6a2bc2 100%);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 40px;
+  color: white;
+}
+
+.visual-content h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 10px; line-height: 1.2; }
+.visual-content p { font-size: 0.9rem; font-weight: 600; opacity: 0.9; }
+
+.login-footer { 
+  margin-top: 30px; 
+  font-size: 0.7rem; 
+  color: #aaa; 
+  font-weight: 600; 
+  text-align: center;
+}
+
+/* --- MEDIA QUERIES ESPECÍFICAS --- */
+
+/* Ajuste para Netbooks (Juana Manso / Conectar Igualdad) y Tablets */
+@media (max-width: 900px) {
+  .login-visual-side {
+    display: none; /* Eliminamos el panel visual para centrar el foco en el login */
+  }
+  
+  .login-container {
+    max-width: 450px; /* El formulario no debe estirarse demasiado */
+  }
+}
+
+/* Ajuste extremo para pantallas con poca altura (ej. 1024x600) */
+@media (max-height: 650px) {
+  .login-container {
+    height: auto;
+    min-height: auto;
+  }
+  .login-form-side {
+    padding: 25px;
+  }
+  .brand-header {
+    margin-bottom: 15px;
+  }
+}

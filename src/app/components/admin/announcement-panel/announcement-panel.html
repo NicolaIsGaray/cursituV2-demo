@@ -1,0 +1,131 @@
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="admin-container" *ngIf="rol === 'ADMIN'">
+    <!-- Lado Izquierdo: Acciones de Anuncios -->
+    <div class="selection-panel">
+      <h3>Panel de Anuncios</h3>
+      <p class="section-description">Difunde información importante a toda la plataforma.</p>
+
+      <div class="admin-actions-list">
+        <button
+          class="admin-btn create"
+          [class.active]="modo === 'crear'"
+          (click)="cambiarModo('crear')"
+        >
+          <span class="material-symbols-outlined">campaign</span>
+          Nuevo Anuncio
+        </button>
+
+        <button
+          class="admin-btn delete"
+          [class.active]="modo === 'eliminar'"
+          (click)="cambiarModo('eliminar')"
+        >
+          <span class="material-symbols-outlined">delete_forever</span>
+          Eliminar Anuncio
+        </button>
+      </div>
+    </div>
+
+    <!-- Lado Derecho: Formulario -->
+    <div class="action-panel">
+      <!-- FORMULARIO CREAR / EDITAR -->
+      <div class="form-card" *ngIf="modo === 'crear'">
+        <header class="form-header" [style.background-color]="'#3f3689'">
+          <h4>{{ modo === 'crear' ? 'Redactar Anuncio' : 'Modificar Anuncio' }}</h4>
+        </header>
+
+        <form class="admin-form" [formGroup]="announcementForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Título del Anuncio *</label>
+              <input
+                type="text"
+                placeholder="Ej: Mantenimiento Programado"
+                class="admin-input"
+                formControlName="title"
+                autocomplete="off"
+              />
+              <span
+                *ngIf="
+                  announcementForm.get('title')?.touched &&
+                  announcementForm.get('title')?.errors?.['required']
+                "
+                style="color: var(--error-red)"
+              >
+                Porfavor, ingrese un titulo.
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label>Tipo de Anuncio</label>
+              <select class="admin-input icon-select" formControlName="type">
+                <option value="" selected disabled>-- Selecciona un tipo --</option>
+                <option value="announcement">📢 Anuncio</option>
+                <option value="info">ℹ️ Aviso</option>
+                <option value="warning">⚠️ Importante</option>
+                <option value="event">📅 Evento</option>
+                <option value="build">🛠️ Mantenimiento</option>
+              </select>
+              <span
+                *ngIf="
+                  announcementForm.get('type')?.touched &&
+                  announcementForm.get('type')?.errors?.['required']
+                "
+                style="color: var(--error-red)"
+              >
+                Porfavor, seleccione un tipo de anuncio.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Cuerpo del Mensaje</label>
+            <quill-editor
+              id="body-editor"
+              formControlName="body"
+              theme="snow"
+              [modules]="editorModules"
+              placeholder="Escribe el contenido del aviso aquí..."
+            ></quill-editor>
+          </div>
+
+          <button
+            class="btn-submit"
+            [style.background-color]="modo === 'crear' ? '#3f3689' : '#2ecc71'"
+          >
+            {{ modo === 'crear' ? 'Publicar Anuncio' : 'Actualizar Publicación' }}
+          </button>
+        </form>
+      </div>
+
+      <!-- FORMULARIO ELIMINAR -->
+      <div class="form-card delete-card" *ngIf="modo === 'eliminar'">
+        <header class="form-header delete-header">
+          <h4>Retirar Anuncio</h4>
+        </header>
+        <div class="delete-content">
+          <p>
+            Selecciona el anuncio que deseas dar de baja. Una vez eliminado, desaparecerá del
+            dashboard de todos los usuarios.
+          </p>
+          <div class="form-group">
+            <label>Seleccionar Publicación</label>
+            <select class="admin-input error-focus" (change)="selectNoticeToDelete($event)">
+              <option value="" selected disabled>-- Selecciona un anuncio --</option>
+              <option *ngFor="let notice of noticeList$ | async" [value]="notice.id" id="notice">
+                {{ notice.title }} - {{ notice.created_at }}
+              </option>
+            </select>
+          </div>
+          <button class="btn-submit btn-delete" (click)="deleteNotice()">Eliminar Anuncio</button>
+        </div>
+      </div>
+
+      <!-- ESTADO INICIAL -->
+      <div class="empty-state" *ngIf="!modo">
+        <span class="material-symbols-outlined">notifications_active</span>
+        <p>Centro de comunicaciones del sistema</p>
+      </div>
+    </div>
+  </div>
+</main>

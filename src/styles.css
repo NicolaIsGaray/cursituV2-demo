@@ -1,0 +1,49 @@
+@import 'quill/dist/quill.core.css';
+@import 'quill/dist/quill.snow.css';
+
+:root {
+  --bg-main: #f4f7fe;
+  --bg-card: #ffffff;
+  --text-primary: #333333;
+  --text-secondary: #666666;
+  --sidebar-shadow: rgba(0, 0, 0, 0.05);
+  --border-color: #f0f0f0;
+  --primary-purple: #3f3689;
+  --light-purple: #665abb;
+  --error-red: #b61b1b;
+  --success-green: #37f050;
+  --waiting-gray: #c4c4c4;
+}
+
+/* Colores para Modo Oscuro */
+body.dark-theme {
+  --bg-main: #1a1a1a;
+  --bg-card: #2d2d2d;
+  --text-primary: #f0f0f0;
+  --text-secondary: #b0b0b0;
+  --sidebar-shadow: rgba(0, 0, 0, 0.3);
+  --border-color: #404040;
+}
+
+/* Aplicación en tus estilos */
+.config-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+}
+
+.config-header h2 {
+  color: var(--text-main);
+}
+
+.config-header p {
+  color: var(--text-muted);
+}
+
+body {
+    margin: 0;
+    height: 100%;
+}
+
+* {
+  font-family: "Lato", sans-serif;
+}

@@ -1,0 +1,73 @@
+<div class="login-page">
+  <div class="login-container">
+    
+    <section class="login-form-side">
+      <div class="brand-header">
+        <span class="material-symbols-outlined logo-icon">school</span>
+        <h1>CursITU</h1>
+      </div>
+
+      <div class="login-content">
+        <h2>Bienvenido de nuevo</h2>
+        <p>Por favor, ingresa tus credenciales para acceder.</p>
+
+        <!-- Vinculamos el formulario al FormGroup -->
+        <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          
+          <div class="input-group">
+            <label for="dni">D.N.I.</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">id_card</span>
+              <input 
+                id="dni"
+                type="text" 
+                formControlName="dni" 
+                placeholder="40.000.000" 
+                maxlength="8">
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="password">Contraseña</label>
+            <div class="input-wrapper">
+              <span class="material-symbols-outlined">lock</span>
+              <input 
+                id="password"
+                type="password" 
+                formControlName="password" 
+                placeholder="••••••••">
+            </div>
+          </div>
+
+          <div class="login-options">
+            <label class="remember-me">
+              <input type="checkbox"> Recordarme
+            </label>
+            <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
+          </div>
+
+          <!-- Cambiado de <a> a <button> para procesar el submit -->
+          <button 
+            type="submit" 
+            class="btn-login" 
+            [disabled]="loginForm.invalid">
+            Iniciar Sesión
+          </button>
+        </form>
+      </div>
+
+      <footer class="login-footer">
+        <p>© 2026 CursITU - Tecnicatura Universitaria en Programación</p>
+      </footer>
+    </section>
+
+    <section class="login-visual-side">
+      <div class="overlay"></div>
+      <div class="visual-content">
+        <h3>Toda la experiencia del ITU, ahora de forma digital y organizada.</h3>
+        <p>Potenciando la educación técnica con herramientas modernas.</p>
+      </div>
+    </section>
+
+  </div>
+</div>

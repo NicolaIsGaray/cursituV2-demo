@@ -1,0 +1,202 @@
+/* === TUS ESTILOS ORIGINALES (SIN CAMBIOS) === */
+
+.config-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.config-header {
+  margin-bottom: 40px;
+}
+
+.config-header h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #333;
+}
+
+.config-header p {
+  color: #777;
+  font-weight: 600;
+}
+
+.config-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+.config-card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+  border: 1px solid #f0f0f0;
+}
+
+.card-icon {
+  background: #eef2ff;
+  color: #3f66cc;
+  padding: 15px;
+  border-radius: 15px;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-content h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.card-content p {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 20px;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.setting-item span {
+  font-weight: 700;
+  color: #444;
+}
+
+.config-select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: #f9f9f9;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input { opacity: 0; width: 0; height: 0; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 4px; bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked + .slider { background-color: #2ecc71; }
+input:checked + .slider:before { transform: translateX(24px); }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
+
+.config-actions {
+  margin-top: 40px;
+  text-align: right;
+}
+
+.btn-save-config {
+  background: #3f66cc;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-save-config:hover { background: #3355aa; }
+
+/* =========================================
+   ADAPTACIÓN PARA RESOLUCIONES (NETBOOKS)
+   ========================================= */
+
+@media (max-width: 1024px) {
+  .config-container {
+    padding: 0 15px;
+  }
+
+  .config-header {
+    margin-bottom: 25px;
+  }
+
+  .config-header h2 {
+    font-size: 1.6rem;
+  }
+
+  .config-card {
+    padding: 20px;
+    gap: 15px;
+  }
+
+  .card-icon {
+    padding: 10px;
+  }
+
+  .card-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .config-actions {
+    margin-top: 25px;
+  }
+}
+
+@media (max-width: 600px) {
+  .config-card {
+    flex-direction: column; /* Colapso de icono y contenido en pantallas muy angostas */
+    align-items: center;
+    text-align: center;
+  }
+
+  .setting-item {
+    width: 100%;
+  }
+
+  .btn-save-config {
+    width: 100%;
+  }
+}
+
+@media (max-height: 650px) {
+  /* Optimización para pantallas bajas (1024x600) */
+  .config-header {
+    margin-bottom: 15px;
+  }
+
+  .config-card {
+    padding: 15px;
+  }
+
+  .card-content p {
+    margin-bottom: 10px;
+  }
+
+  .config-actions {
+    margin-top: 20px;
+  }
+}

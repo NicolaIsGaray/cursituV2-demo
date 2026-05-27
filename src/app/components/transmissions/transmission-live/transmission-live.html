@@ -1,0 +1,52 @@
+<div class="live-container">
+  <!-- Barra Superior -->
+  <header class="live-header">
+    <div class="header-left">
+      <span class="brand">CursITU</span>
+    </div>
+    
+    <div class="header-center">
+      <div class="live-indicator">
+        <span class="dot"></span>
+        <span class="live-text">EN VIVO</span>
+      </div>
+      <div class="divider"></div>
+      <span class="group-name">Grupo #2 – Arquitectura de Software</span>
+    </div>
+
+    <div class="header-right">
+      <button class="btn-exit" (click)="salirDeTransmision()">
+        <span>Salir</span>
+        <span class="material-symbols-outlined">logout</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Visor de Diapositivas -->
+  <main class="viewer-area">
+    <div class="slide-aspect-ratio">
+      <div class="slide-content">
+        <!-- Placeholder para la imagen o contenido de la slide -->
+        <div class="slide-placeholder">
+          <h1>DIAPOSITIVA #1</h1>
+          <p>Contenido de la presentación...</p>
+        </div>
+      </div>
+
+      <!-- Controles flotantes (Opcional: solo para el presentador/docente) -->
+      <div class="slide-controls">
+        <button class="control-btn"><span class="material-symbols-outlined">chevron_left</span></button>
+        <span class="slide-counter">1 / 12</span>
+        <button class="control-btn"><span class="material-symbols-outlined">chevron_right</span></button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Barra Inferior (Información extra) -->
+  <footer class="live-footer">
+    <div class="viewer-count">
+      <span class="material-symbols-outlined">group</span>
+      <span>24 espectadores</span>
+    </div>
+  </footer >
+</div>

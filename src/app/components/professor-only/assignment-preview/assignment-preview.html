@@ -1,0 +1,57 @@
+<div class="assignment-view-container" *ngIf="assignment$ | async as assignment; else loading">
+  <div class="assignment-header">
+    <div class="badge-type" [ngClass]="assignment.type">
+      <span class="material-symbols-outlined">
+        {{ assignment.type === 'tarea' ? 'assignment' : 'quiz' }}
+      </span>
+      {{ assignment.type | uppercase }}
+    </div>
+    <h2>{{ assignment.title }}</h2>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="assignment-body">
+    <h3>Descripción y Consigna</h3>
+    <div class="consigna-content" [innerHTML]="assignment.content"></div>
+  </div>
+
+  <div class="assignment-metadata-grid">
+    <div class="meta-item">
+      <span class="material-symbols-outlined meta-icon">calendar_month</span>
+      <div class="meta-info">
+        <label>Fecha Límite de Entrega</label>
+        <p class="deadline">{{ formatDate(assignment.date_limit) }}</p>
+      </div>
+    </div>
+
+    <div class="meta-item">
+      <span class="material-symbols-outlined meta-icon">file_present</span>
+      <div class="meta-info">
+        <label>Formato de Archivo Aceptado</label>
+        <p class="file-type">{{ assignment.accepted_files || 'Cualquier formato' }}</p>
+      </div>
+    </div>
+
+    <div class="meta-item">
+      <span class="material-symbols-outlined meta-icon">info</span>
+      <div class="meta-info">
+        <label>Estado del Entregable</label>
+        <p class="status-info">Publicado (Solo Lectura)</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="action-footer">
+    <button class="btn-return" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Volver a la gestión
+    </button>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div class="loading-box">
+    <p>Cargando detalles de la consigna...</p>
+  </div>
+</ng-template>

@@ -1,0 +1,134 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="gestion-fechas-container" *ngIf="rol === 'DOCENTE'">
+    <main class="calendario-content">
+      <header class="calendario-header">
+        <h2>Fechas Importantes</h2>
+        <button class="btn-programar" (click)="activateScheduleProgram()">
+          <span class="material-symbols-outlined">calendar_add_on</span>
+          <span class="btn-text">Programar</span>
+        </button>
+      </header>
+
+      <div class="calendario-card">
+        @if (currentSubject$ | async; as subject) {
+          <div class="calendario-banner">CALENDARIO ACADÉMICO - {{ subject.subject_name }}</div>
+        }
+
+        <div class="fechas-lista">
+          @if (isCreating) {
+            <div class="fecha-item formulario-creacion editing">
+              <div class="fecha-main-info">
+                <div class="icon-box" [ngClass]="newDateEvent.event.toLowerCase()">
+                  <span class="material-symbols-outlined">
+                    {{
+                      newDateEvent.event === 'EXAMEN' || newDateEvent.event === 'FINAL'
+                        ? 'priority_high'
+                        : 'menu_book'
+                    }}
+                  </span>
+                </div>
+                <div class="fecha-text input-fields">
+                  <input
+                    type="text"
+                    class="input-titulo-dinamico"
+                    placeholder="Ej: Parcial N° 1 o Final Ordinario"
+                    [(ngModel)]="newDateEvent.title"
+                  />
+
+                  <div class="select-wrapper">
+                    <select class="select-tipo-dinamico" [(ngModel)]="newDateEvent.event">
+                      <option value="EXAMEN">EXAMEN</option>
+                      <option value="CLASE">CLASE</option>
+                      <option value="FINAL">FINAL</option>
+                    </select>
+                    <span class="material-symbols-outlined select-arrow">arrow_drop_down</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="fecha-controls">
+                <div class="date-input-wrapper focusable">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <input
+                    type="datetime-local"
+                    class="date-display-editable"
+                    [(ngModel)]="newDateEvent.date"
+                  />
+                </div>
+                <div class="action-buttons">
+                  <button
+                    class="btn-action success"
+                    title="Confirmar y Guardar"
+                    (click)="saveNewDateEvent()"
+                  >
+                    <span class="material-symbols-outlined">check</span>
+                  </button>
+                  <button class="btn-action delete" title="Cancelar" (click)="cancelCreation()">
+                    <span class="material-symbols-outlined">close</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+
+          @for (date of dateList$ | async; track date.id) {
+            <div class="fecha-item">
+              <div class="fecha-main-info">
+                <div class="icon-box examen">
+                  <span class="material-symbols-outlined">{{
+                    date.event === 'EXAMEN' ? 'priority_high' : 'schedule'
+                  }}</span>
+                </div>
+                <div class="fecha-text">
+                  <h4>{{ date.title }}</h4>
+                  <span class="tag-tipo">{{ date.event }}</span>
+                </div>
+              </div>
+
+              <div class="fecha-controls">
+                <div class="date-input-wrapper">
+                  <span class="material-symbols-outlined">event</span>
+                  <input
+                    type="text"
+                    class="date-display"
+                    [value]="date.date | date: 'dd \'de\' MMM, yyyy - HH:mm \'hs\''"
+                    readonly
+                  />
+                </div>
+                <div class="action-buttons">
+                  <button class="btn-action" title="Notificar como importante">
+                    <span class="material-symbols-outlined">notifications</span>
+                  </button>
+                  <button class="btn-action delete" title="Eliminar Fecha" (click)="deleteDateEvent(date.id!)">
+                    <span class="material-symbols-outlined">delete</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          } @empty {
+            @if (!isCreating) {
+              <div class="empty-calendar-placeholder">
+                <div class="icon-container">
+                  <span class="material-symbols-outlined">calendar_today</span>
+                </div>
+                <h3>Sin fechas programadas</h3>
+                <p>
+                  El calendario académico de esta materia está vacío. Presioná el botón
+                  <strong>"Programar"</strong> en la cabecera para fijar fechas importantes, como
+                  examenes o reuniones.
+                </p>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </main>
+  </div>
+</main>

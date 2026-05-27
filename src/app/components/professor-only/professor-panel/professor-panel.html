@@ -1,0 +1,98 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="curso-container" *ngIf="rol === 'DOCENTE'">
+    <div *ngIf="subject$ | async as subject">
+      <header class="curso-header">
+        <span class="subject-tag">Materia</span>
+        <h2>{{ subject.subject_name }}</h2>
+      </header>
+
+      <div class="curso-wrapper">
+        <div class="welcome-banner">
+          <h3 class="greeting-title">¿Qué haremos hoy, profe?</h3>
+          <p class="greeting-subtitle">Seleccione una opción para gestionar su curso.</p>
+        </div>
+
+        <div class="actions-grid">
+          <!-- Ver Notas -->
+          <a
+            class="action-card"
+            routerLink="/manage-grades"
+            [style.background-color]="subject.color"
+          >
+            <div class="icon-box">
+              <span class="material-symbols-outlined">fact_check</span>
+            </div>
+            <span class="card-label">Gestionar Notas</span>
+          </a>
+
+          <!-- Gestionar Clases -->
+          <a
+            class="action-card"
+            (click)="navigateToClassroom('/current-classroom', subject.classroom_id!)"
+            [style.background-color]="subject.color"
+          >
+            <div class="icon-box">
+              <span class="material-symbols-outlined">school</span>
+            </div>
+            <span class="card-label">Gestionar Clases</span>
+          </a>
+
+          <!-- Editar Materia -->
+          <a
+            class="action-card"
+            routerLink="/edit-subject"
+            [style.background-color]="subject.color"
+          >
+            <div class="icon-box">
+              <span class="material-symbols-outlined">edit_note</span>
+            </div>
+            <span class="card-label">Editar Materia</span>
+          </a>
+
+          <!-- Gestionar Fechas -->
+          <a
+            class="action-card"
+            routerLink="/manage-dates"
+            [style.background-color]="subject.color"
+          >
+            <div class="icon-box">
+              <span class="material-symbols-outlined">edit_calendar</span>
+            </div>
+            <span class="card-label">Gestionar Fechas</span>
+          </a>
+
+          <!-- Gestionar Trabajos Prácticos -->
+          <a
+            class="action-card"
+            routerLink="/manage-tasks"
+            [style.background-color]="subject.color"
+          >
+            <div class="icon-box">
+              <span class="material-symbols-outlined">assignment</span>
+            </div>
+            <span class="card-label">Gestionar TPs</span>
+          </a>
+
+          <!-- Gestionar Parciales -->
+          <a
+            class="action-card"
+            routerLink="/manage-finals"
+            [style.background-color]="subject.color"
+          >
+            <div class="icon-box">
+              <span class="material-symbols-outlined">view_kanban</span>
+            </div>
+            <span class="card-label">Gestionar Parciales</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

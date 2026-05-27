@@ -1,0 +1,152 @@
+/* === LAYOUT BASE === */
+.curso-container {
+  padding: 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.curso-header {
+  margin-bottom: 2rem;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary-purple);
+}
+
+.subject-tag {
+  background: #3f3689;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.curso-container h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin-top: 0.5rem;
+}
+
+/* === PANEL CENTRAL === */
+.curso-wrapper {
+  background: #ffffff;
+  border-radius: 30px;
+  padding: 3rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f0f0f0;
+}
+
+.welcome-banner {
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.greeting-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.greeting-subtitle {
+  color: #888;
+  font-weight: 500;
+}
+
+/* === GRID DE ACCIONES === */
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.action-card {
+  height: 180px;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.action-card:hover {
+  transform: translateY(-8px);
+  filter: brightness(1.1);
+}
+
+.icon-box .material-symbols-outlined {
+  font-size: 3.5rem;
+  transition: transform 0.3s;
+}
+
+.action-card:hover .icon-box .material-symbols-outlined {
+  transform: scale(1.1);
+}
+
+.card-label {
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 0 10px;
+}
+
+/* === ADAPTACIÓN RESPONSIVA === */
+@media (max-width: 1024px) {
+  .curso-wrapper { padding: 2rem; }
+  .actions-grid { gap: 1.5rem; }
+  .action-card { height: 160px; }
+  .greeting-title { font-size: 1.8rem; }
+}
+
+@media (max-width: 850px) {
+  .actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+  .curso-container h2 { font-size: 1.5rem; }
+}
+
+/* Optimización para Netbooks (Baja altura) */
+@media (max-height: 650px) {
+  .curso-container { padding: 1rem; }
+  .welcome-banner { margin-bottom: 1.5rem; }
+  .greeting-title { font-size: 1.5rem; }
+  .action-card { height: 120px; gap: 0.5rem; }
+  .icon-box .material-symbols-outlined { font-size: 2.2rem; }
+  .card-label { font-size: 0.85rem; }
+  .curso-wrapper { padding: 1.5rem; }
+}

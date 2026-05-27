@@ -1,0 +1,202 @@
+.admin-container {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 25px;
+  height: calc(100vh - 120px); /* Ajuste para netbook */
+  padding: 10px;
+}
+
+/* PANEL IZQUIERDO */
+.selection-panel {
+  background: white;
+  padding: 25px;
+  border-radius: 20px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.section-description {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: 25px;
+}
+
+.admin-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: #f8faff;
+  color: #555;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.admin-btn span { font-size: 20px; }
+
+.admin-btn:hover { background: #f0f2f7; transform: translateX(5px); }
+
+/* Estados activos por tipo */
+.admin-btn.active.create { background: #3f3689; color: white; }
+.admin-btn.active.delete { background: #e74c3c; color: white; }
+
+/* PANEL DERECHO */
+.action-panel {
+  height: 100%;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.form-card {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.form-header {
+  padding: 20px 30px;
+  color: white;
+}
+
+.form-header h4 { margin: 0; font-size: 1.2rem; }
+
+.admin-form {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-primary, #333);
+}
+
+.admin-input {
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: #fcfcfc;
+}
+
+.admin-input.multi {
+  height: 80px; /* Tamaño reducido para netbooks */
+}
+
+.btn-submit {
+  margin-top: 10px;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: 800;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.btn-submit:hover { opacity: 0.9; }
+
+/* SECCIÓN ELIMINAR */
+.delete-header { background-color: #e74c3c; }
+.delete-content { padding: 30px; }
+.btn-delete { background-color: #e74c3c; width: 100%; }
+.error-focus:focus { border-color: #e74c3c; outline: none; }
+
+/* ESTADO VACÍO */
+.empty-state {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #ccc;
+  border: 2px dashed #eee;
+  border-radius: 20px;
+}
+
+.empty-state span { font-size: 64px; }
+
+.textarea-field {
+  resize: none;
+  font-family: inherit;
+  line-height: 1.5;
+  padding: 15px;
+  background: #fcfcfc;
+  border: 1px solid #e0e0e0;
+  transition: border-color 0.2s;
+}
+
+.textarea-field:focus {
+  border-color: var(--primary-purple);
+  outline: none;
+}
+
+.icon-select {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Optimización para Netbooks (Pantalla corta) */
+@media (max-height: 600px) {
+  .textarea-field {
+    height: 120px; /* Reducción de altura para evitar scroll excesivo */
+  }
+  
+  .admin-form {
+    padding: 20px;
+    gap: 12px;
+  }
+  
+  .form-header {
+    padding: 15px 25px;
+  }
+}
+
+/* Estilos de botones de acción específicos */
+.admin-btn.active.create { background: #3f3689; color: white; }
+.admin-btn.active.edit { background: #2ecc71; color: white; }
+.admin-btn.active.delete { background: #e74c3c; color: white; }
+
+/* Ajustes para Netbook */
+@media (max-height: 600px) {
+  .admin-form {
+    padding: 20px;
+    gap: 15px;
+  }
+  
+  .color-input {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .form-header {
+    padding: 15px 25px;
+  }
+}

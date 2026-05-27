@@ -1,0 +1,682 @@
+h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+}
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+.dashboard-grid {
+  display: grid;
+  /* Definimos 3 columnas de igual tamaño */
+  grid-template-columns: repeat(3, 1fr);
+  /* Altura base de las filas */
+  grid-auto-rows: minmax(160px, auto);
+  gap: 24px;
+}
+
+/* Estilo General de las Tarjetas */
+.card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+}
+
+.card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 12px 0;
+  color: #1a1a1a;
+}
+
+.pending-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.pending-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border-color, #eaeaea);
+}
+
+.pending-item:last-child {
+  border-bottom: none;
+}
+
+.pending-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.subject-name {
+  font-weight: 600;
+  color: #333;
+}
+
+.due-date {
+  font-size: 0.85rem;
+  color: #e74c3c; /* Tono rojo/alerta para indicar vencimiento */
+}
+
+.btn-goto {
+  background: none;
+  border: none;
+  color: #3f3689;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.btn-goto:hover {
+  transform: translateX(4px);
+}
+
+/* El recuadro gris interno de cada sección */
+.card-content.empty {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  color: #8d8d8d;
+}
+
+.card-content.empty p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.success-text {
+  color: #1a1a1a;
+  margin-top: 5px;
+  font-size: 0.95rem;
+}
+
+/* --- Lógica de Posicionamiento (Grid) --- */
+.card.wide {
+  grid-column: span 2; /* Ocupa las primeras dos columnas */
+}
+
+.card.tall {
+  grid-row: span 2; /* Se estira hacia abajo ocupando 2 filas */
+  grid-column: 3; /* Se queda fija en la columna de la derecha */
+}
+
+.card.small {
+  grid-column: span 1; /* Ocupa solo una celda */
+}
+
+/* Ajuste de responsividad básico */
+@media (max-width: 1100px) {
+  .dashboard-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .card.tall {
+    grid-column: span 2;
+    grid-row: auto;
+  }
+}
+
+/* === DOCENTE STYLES === */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ==========================================================================
+   SECCIÓN: CONTENEDOR GLOBAL DE LA GRILLA (CRÍTICO PARA EL SCROLL)
+   ========================================================================== */
+.info-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Mantiene la proporción de tus columnas */
+  gap: 20px;
+
+  /* Limitamos la altura de la grilla al espacio disponible de la pantalla */
+  height: calc(80vh - 160px);
+  max-height: calc(100vh - 160px);
+
+  /* Evita que toda la página web genere un scroll general */
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   SECCIÓN: LISTADO DE ALUMNOS (ASIDE - ESTRUCTURA COMPLETA)
+   ========================================================================== */
+
+/* Columna derecha de la grilla */
+.side-stats {
+  height: 100%;
+  max-height: 100%;
+  min-height: 0; /* PERMITE QUE LOS HIJOS COLAPSEN Y GENEREN SCROLL INTERNO */
+  display: flex;
+  flex-direction: column;
+}
+
+/* LA TARJETA (CARD) */
+.stat-card.full-height {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%; /* Restricción estricta dentro de la columna */
+  box-sizing: border-box;
+  overflow: hidden; /* Asegura que nada se escape de los bordes redondeados */
+}
+
+/* Estado de carga */
+.loading-card-state {
+  align-items: center;
+  justify-content: center;
+}
+
+.card-header-inline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-shrink: 0; /* Impide que el título se achique o desaparezca */
+}
+
+.card-header-inline h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--text-primary, #333);
+}
+
+.count-badge {
+  background: #f0f2f7;
+  color: #3f3689;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+/* COMPONENTE: DROPDOWN DE FILTRO POR MATERIAS */
+.subject-filter-container {
+  margin-bottom: 15px;
+  width: 100%;
+  flex-shrink: 0;
+}
+
+.select-subject {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #475569;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  outline: none;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 14px;
+}
+
+.select-subject:focus {
+  border-color: var(--primary-purple, #3f3689);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(63, 54, 137, 0.1);
+}
+
+/* ÁREA DE SCROLL INTERNO (Previene el crecimiento infinito) */
+.students-scroll-area {
+  flex: 1;
+  overflow-y: auto; /* Fuerza el scroll vertical aquí dentro */
+  overflow-x: hidden;
+  padding-right: 5px;
+}
+
+/* LISTA DE ITEMS */
+.students-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.student-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f8faff;
+  border-radius: 12px;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+
+.student-item:hover {
+  background: #f0f3fa;
+  transform: translateX(3px);
+}
+
+/* AVATAR DEL ALUMNO */
+.student-avatar {
+  width: 36px;
+  height: 36px;
+  background: #3f3689;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.student-avatar span {
+  font-size: 18px;
+}
+
+/* INFORMACIÓN ESCRITA */
+.student-info {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.student-name {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #444;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.student-email {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #888;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* ESTADO VACÍO REDISEÑADO */
+.empty-state-container {
+  height: 100%;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  gap: 8px;
+  text-align: center;
+}
+
+.empty-state-container span {
+  font-size: 36px;
+}
+
+.empty-state-container p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.list-loading {
+  text-align: center;
+  color: #888;
+  font-size: 0.85rem;
+  padding: 20px;
+}
+
+/* ==========================================================================
+   DISEÑO DE LA BARRA DE DESPLAZAMIENTO (SCROLLBAR)
+   ========================================================================== */
+.students-scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.students-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.students-scroll-area::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.students-scroll-area::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* --- BANNER PRINCIPAL --- */
+.action-banner {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-create-activity {
+  width: 100%;
+  background: var(--primary-purple); /* #3f3689 */
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  cursor: pointer;
+  box-shadow: 0px 8px 25px rgba(63, 54, 137, 0.3);
+  transition: transform 0.2s;
+}
+
+.btn-create-activity:hover {
+  transform: translateY(-3px);
+}
+
+.btn-create-activity span {
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+
+.icon-plus {
+  font-size: 3.5rem !important;
+}
+
+/* --- GRILLA DE TARJETAS --- */
+.info-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Proporción para la lista de alumnos */
+  gap: 1.5rem;
+}
+
+.main-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1.5rem;
+}
+
+/* === CARD ESTRUCTURAL DE ESTADÍSTICAS / ÚLTIMA ACTIVIDAD === */
+.stat-card {
+  background: var(--white, #ffffff);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  box-sizing: border-box;
+}
+
+.wide-card {
+  grid-column: span 2;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.stat-card h3 {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 16px 0;
+}
+
+/* --- CONTENIDO INTERNO DE LA ÚLTIMA ACTIVIDAD VISITADA --- */
+.actividad-recent-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-grow: 1;
+}
+
+.actividad-info-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.actividad-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.actividad-titulo {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* NUEVO BOTÓN EXPLICITO */
+.btn-actividad-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--primary-purple, #3f3689);
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s ease;
+}
+
+.btn-actividad-link:hover {
+  color: #2e266a;
+}
+
+.btn-actividad-link .material-symbols-outlined {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.btn-actividad-link:hover .material-symbols-outlined {
+  transform: translateX(3px);
+}
+
+.actividad-meta-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #f1f5f9;
+  padding-top: 12px;
+  margin-top: 12px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #475569;
+}
+
+.meta-item .material-symbols-outlined {
+  font-size: 1rem;
+  color: #94a3b8;
+}
+
+.meta-item-time {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #94a3b8;
+}
+
+/* --- ESTADO VACÍO (FALLBACK UNIFICADO) --- */
+.stat-card .empty-state {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 10px;
+  padding: 10px 0;
+}
+
+.empty-icon-wrapper {
+  background: #f8fafc;
+  color: #94a3b8;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.empty-icon-wrapper .material-symbols-outlined {
+  font-size: 1.3rem;
+}
+
+.stat-card .empty-state p {
+  color: #94a3b8;
+  font-size: 0.88rem;
+  font-weight: 600;
+  max-width: 220px;
+  margin: 0;
+}
+
+/* =========================================
+   ADAPTACIÓN MOBILE (HOME)
+   ========================================= */
+
+/* --- AJUSTES PARA TABLETS (768px o menos) --- */
+@media (max-width: 768px) {
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  /* VISTA ALUMNO */
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    gap: 16px;
+  }
+
+  .card.wide,
+  .card.tall,
+  .card.small {
+    grid-column: span 1;
+    grid-row: auto;
+    min-height: 140px;
+  }
+
+  /* VISTA DOCENTE */
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .main-stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .wide-card {
+    grid-column: span 1;
+  }
+
+  .stat-card {
+    min-height: 180px;
+  }
+
+  .btn-create-activity {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
+  .btn-create-activity span {
+    font-size: 1.4rem;
+  }
+}
+
+/* --- AJUSTES PARA MÓVILES PEQUEÑOS (480px o menos) --- */
+@media (max-width: 480px) {
+  .card,
+  .stat-card {
+    padding: 16px;
+  }
+
+  .card h3,
+  .stat-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .card-content.empty p,
+  .stat-card .empty-state p {
+    font-size: 0.85rem;
+  }
+
+  /* Ajuste de Banner Docente */
+  .btn-create-activity {
+    padding: 1.2rem;
+  }
+
+  .btn-create-activity span {
+    font-size: 1.2rem;
+  }
+
+  .success-text {
+    font-size: 0.85rem;
+  }
+}
+
+/* --- CORRECCIÓN PARA DISPOSITIVOS MUY ESTRECHOS O LANDSCAPE CORTO --- */
+@media (max-height: 500px) and (orientation: landscape) {
+  .dashboard-grid,
+  .info-grid {
+    gap: 10px;
+  }
+
+  .stat-card,
+  .card {
+    min-height: auto;
+    padding: 12px;
+  }
+}

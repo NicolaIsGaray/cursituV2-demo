@@ -1,0 +1,114 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="gestion-parciales-container" *ngIf="rol === 'DOCENTE'">
+    <div class="parciales-panel">
+      <h2>Gestión de Parciales y Exámenes</h2>
+
+      <div class="filter-wrapper" style="margin-bottom: 1.5rem">
+        <div class="filter-scroll">
+          @for (exam of examsList$ | async; track exam.id) {
+            <button
+              class="filter-chip"
+              [class.active]="selectedExamId === exam.id"
+              (click)="selectExam(exam.id!)"
+            >
+              {{ exam.title | uppercase }}
+            </button>
+          } @empty {
+            <div class="empty-tp-placeholder">
+              <h3>No hay exámenes o parciales programados para esta materia.</h3>
+            </div>
+          }
+        </div>
+      </div>
+
+      @if (selectedExamDetails$ | async; as examDetails) {
+        <div class="examen-card">
+          <header class="examen-header">
+            <div class="examen-title-group">
+              <h3>PLANILLA DE CALIFICACIONES</h3>
+              <span class="materia-sub">Materia: {{ currentSubject.subject_name }}</span>
+            </div>
+            <div class="examen-top-actions">
+              <button class="btn-tool" title="Configurar">
+                <span class="material-symbols-outlined">settings</span>
+              </button>
+              <button class="btn-tool" title="Descargar Acta">
+                <span class="material-symbols-outlined">download</span>
+              </button>
+            </div>
+          </header>
+
+          <div class="logistics-grid">
+            <div class="log-item">
+              <span class="log-label">FECHA</span>
+              <div class="log-value-box">
+                {{ examDetails.date }} <span class="material-symbols-outlined">calendar_today</span>
+              </div>
+            </div>
+            <div class="log-item">
+              <span class="log-label">HORARIO</span>
+              <div class="log-value-box">
+                {{ examDetails.startTime }} a {{ examDetails.endTime }}
+              </div>
+            </div>
+            <div class="log-item">
+              <span class="log-label">MODALIDAD</span>
+              <div class="log-value-box">{{ examDetails.type }}</div>
+            </div>
+            <div class="log-item">
+              <span class="log-label">INSCRIPTOS</span>
+              <div class="log-value-box">{{ examDetails.totalStudents }} Alumnos</div>
+            </div>
+          </div>
+
+          <div class="alumnos-table">
+            <div class="table-head">
+              <span class="col-name">Alumno</span>
+              <span class="col-attendance">Estado</span>
+              <span class="col-grade">Nota</span>
+            </div>
+
+            <div class="table-body">
+              @for (student of examDetails.studentList; track student.studentId) {
+                <div class="student-row">
+                  <span class="col-name">
+                    <strong>{{ student.studentName }}</strong>
+                  </span>
+
+                  <span class="col-attendance">
+                    <span class="status-badge" [ngClass]="student.status.toLowerCase()">
+                      {{ student.status }}
+                    </span>
+                  </span>
+
+                  <span class="col-grade">
+                    <input
+                      type="number"
+                      class="input-mini-nota"
+                      min="1"
+                      max="10"
+                      step="0.5"
+                      [(ngModel)]="student.grade"
+                      (change)="saveGrade(student, selectedExamId!)"
+                    />
+                  </span>
+                </div>
+              } @empty {
+                <div class="empty-table-row">
+                  <span>No hay alumnos registrados en la lista de este examen.</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</main>

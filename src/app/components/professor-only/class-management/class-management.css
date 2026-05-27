@@ -1,0 +1,460 @@
+/* ==========================================================================
+   ESTRUCTURA DE CONTENEDORES
+   ========================================================================== */
+
+.form-scroll-container {
+  max-height: 80vh;
+  overflow-y: auto;
+  padding-right: 12px;
+}
+
+.form-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.form-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--subject-color, #3f3689);
+  border-radius: 10px;
+}
+
+.form-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.04);
+  border: 1px solid #edf2f7;
+}
+
+.form-card h2 {
+  margin: 0 0 2.5rem 0;
+  font-size: 1.75rem;
+  color: #2d3748;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   ELEMENTOS DE FORMULARIO COMUNES
+   ========================================================================== */
+
+.form-group {
+  margin-bottom: 2.5rem;
+}
+
+label {
+  display: block;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #2d3748;
+  margin-bottom: 12px;
+}
+
+.sub-label {
+  font-size: 0.88rem;
+  color: #718096;
+  font-weight: 600;
+  margin-bottom: 12px;
+  margin-top: 5px;
+}
+
+.input-field {
+  width: 100%;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--subject-color, #3f3689);
+  box-shadow: 0 0 0 3px hsl(from var(--subject-color, #3f3689) h s l / 0.15);
+  background: #ffffff;
+}
+
+.content-editor {
+  width: 100%;
+  height: 220px;
+}
+
+/* ==========================================================================
+   SECCIÓN DE ADJUNTOS Y PARAMETRIZACIÓN (GRID)
+   ========================================================================== */
+
+.grid-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.5rem;
+  margin-top: 2.5rem;
+  padding-top: 2rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+}
+
+/* BOTONES DE SUBIDA */
+.btn-upload {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #f0f2f7;
+  color: var(--subject-color, #3f3689);
+  border: 1px dashed var(--subject-color, #3f3689);
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-upload:hover {
+  background: hsl(from var(--subject-color, #3f3689) h s l / 0.08);
+}
+
+.btn-upload span.material-symbols-outlined {
+  font-size: 20px;
+}
+
+/* COMPONENTES DE LISTA DE ARCHIVOS */
+.file-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.file-list li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: #f8faff;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #475569;
+  border: 1px solid #eef2f6;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.file-list li:hover {
+  background: #f0f3fa;
+  transform: translateX(3px);
+}
+
+.file-list li span.material-symbols-outlined {
+  font-size: 20px;
+}
+
+.icon-doc { color: #3b82f6; }
+.icon-folder { color: #e2b93b; }
+.file-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* CONTROL DE ENTREGA (TOGGLES) */
+.toggle-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 2rem;
+  background: #f1f5f9;
+  padding: 6px;
+  border-radius: 14px;
+  width: fit-content;
+}
+
+.toggle-btn {
+  padding: 10px 36px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.toggle-btn.active {
+  background: var(--subject-color, #3f3689);
+  color: #ffffff;
+  box-shadow: 0 4px 10px hsl(from var(--subject-color, #3f3689) h s l / 0.25);
+}
+
+.toggle-btn.inactive {
+  background: transparent;
+  color: #64748b;
+}
+
+.toggle-btn.inactive:hover {
+  color: #334155;
+}
+
+/* ==========================================================================
+   FORMULARIO DE CONSIGNAS (TAREA)
+   ========================================================================== */
+
+.assignment-form-container {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  animation: fadeInForm 0.3s ease-out forwards;
+}
+
+@keyframes fadeInForm {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.section-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 2px dashed #e2e8f0;
+}
+
+.section-divider span {
+  padding: 0 15px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--subject-color, #3f3689);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.assignment-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 3.5rem;
+}
+
+.form-group-sub {
+  margin-bottom: 1.8rem;
+}
+
+.textarea-field {
+  width: 100%;
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 1rem;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  box-sizing: border-box;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+
+.textarea-field:focus {
+  outline: none;
+  border-color: var(--subject-color, #3f3689);
+  box-shadow: 0 0 0 3px hsl(from var(--subject-color, #3f3689) h s l / 0.15);
+  background: #ffffff;
+}
+
+.date-picker {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* TARJETAS DE SELECCIÓN DE FORMATO */
+.format-options-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.format-card-btn {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 14px 20px;
+  background: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 14px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.format-card-btn span.material-symbols-outlined {
+  font-size: 24px;
+  color: #64748b;
+  transition: color 0.2s;
+}
+
+.format-card-btn:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+/* Estado seleccionado dinámico */
+.format-card-btn.selected {
+  border-color: var(--subject-color, #3f3689);
+  background: hsl(from var(--subject-color, #3f3689) h s l / 0.04);
+  color: var(--subject-color, #3f3689);
+}
+
+.format-card-btn.selected span.material-symbols-outlined {
+  color: var(--subject-color, #3f3689);
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary-purple);
+}
+
+/* ==========================================================================
+   RESPONSIVE EXTRA PARA LA NUEVA COMPOSICIÓN
+   ========================================================================== */
+
+@media (max-width: 950px) {
+  .assignment-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+/* ==========================================================================
+   PIE DE PÁGINA Y ACCIONES FINALES
+   ========================================================================== */
+
+.form-footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btn-finalizar {
+  background: var(--subject-color, #3f3689);
+  color: #ffffff;
+  border: none;
+  padding: 16px 70px;
+  border-radius: 14px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0px 6px 20px hsl(from var(--subject-color, #3f3689) h s l / 0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-finalizar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 25px hsl(from var(--subject-color, #3f3689) h s l / 0.4);
+}
+
+.btn-finalizar:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   DISEÑO ADAPTATIVO (MEDIA QUERIES)
+   ========================================================================== */
+
+@media (max-width: 1100px) {
+  .form-card {
+    padding: 2rem;
+  }
+
+  .grid-columns {
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 850px) {
+  .grid-columns {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .form-footer {
+    margin-top: 2.5rem;
+  }
+}
+
+@media (max-height: 650px) {
+  .form-scroll-container {
+    max-height: 72vh;
+  }
+
+  .form-card h2 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    font-size: 0.95rem;
+  }
+
+  .input-field {
+    padding: 11px 14px;
+  }
+
+  .content-editor {
+    height: 160px;
+  }
+
+  .btn-upload {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+
+  .file-list li {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+
+  .form-footer {
+    margin-top: 2rem;
+  }
+
+  .btn-finalizar {
+    padding: 12px 50px;
+    font-size: 1.05rem;
+  }
+}

@@ -1,0 +1,278 @@
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="admin-container" *ngIf="rol === 'ADMIN'">
+    <div class="selection-panel">
+      <h3>Gestión de Usuarios</h3>
+      <p class="section-description">Selecciona una operación para administrar la base de datos.</p>
+
+      <div class="admin-actions-list">
+        <button
+          class="admin-btn create"
+          [class.active]="mode === 'crear'"
+          (click)="changeMode('crear')"
+        >
+          <span class="material-symbols-outlined">person_add</span> Crear Usuario
+        </button>
+
+        <button
+          class="admin-btn edit"
+          [class.active]="mode === 'editar'"
+          (click)="changeMode('editar')"
+        >
+          <span class="material-symbols-outlined">edit_square</span> Editar Usuario
+        </button>
+
+        <button
+          class="admin-btn delete"
+          [class.active]="mode === 'eliminar'"
+          (click)="changeMode('eliminar')"
+        >
+          <span class="material-symbols-outlined">person_remove</span> Eliminar Usuario
+        </button>
+      </div>
+    </div>
+
+    <div class="action-panel">
+      <div class="form-card" *ngIf="mode === 'crear' || mode === 'editar'">
+        <header
+          class="form-header"
+          [style.background-color]="mode === 'crear' ? '#3f3689' : '#2ecc71'"
+        >
+          <h4>{{ mode === 'crear' ? 'Nuevo Usuario' : 'Modificar Usuario' }}</h4>
+        </header>
+
+        <div class="admin-form" *ngIf="mode === 'editar'">
+          <label for="dni-input">Buscar por DNI:</label>
+          <input
+            class="admin-input"
+            type="text"
+            placeholder="Sin puntos"
+            id="dni-input"
+            [formControl]="dniEditControl"
+          />
+
+          <ul class="user-list">
+            <li *ngFor="let user of usersFound$ | async" [id]="user.id" class="user-item">
+              <button type="button" class="user-card" (click)="userToEdit(user)">
+                <div class="user-avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+                <div class="user-info">
+                  <span class="user-name">{{ user.name }}</span>
+                  <span class="user-role" [ngClass]="user.role.toLowerCase()">{{ user.role }}</span>
+                </div>
+              </button>
+            </li>
+          </ul>
+        </div>
+
+        <form class="admin-form" [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nombre Completo *</label>
+              <input
+                type="text"
+                placeholder="Ej: Juan Pérez"
+                class="admin-input"
+                formControlName="fullname"
+                id="fullname"
+                autocomplete="off"
+              />
+              <span
+                *ngIf="
+                  userForm.get('fullname')?.touched &&
+                  userForm.get('fullname')?.errors?.['required']
+                "
+                style="color: var(--error-red)"
+              >
+                Por favor, ingresa un nombre.
+              </span>
+            </div>
+            <div class="form-group">
+              <label>Correo Electrónico *</label>
+              <input
+                type="email"
+                placeholder="usuario@gmail.com"
+                class="admin-input"
+                id="email"
+                formControlName="email"
+                autocomplete="off"
+              />
+              <span
+                *ngIf="
+                  userForm.get('email')?.touched && userForm.get('email')?.errors?.['required']
+                "
+                style="color: var(--error-red)"
+              >
+                Por favor, ingrese un correo válido.
+              </span>
+              <span
+                *ngIf="
+                  userForm.get('email')?.touched &&
+                  (userForm.get('email')?.errors?.['email'] ||
+                    userForm.get('email')?.errors?.['pattern'])
+                "
+                style="color: var(--error-red)"
+              >
+                El correo ingresado es inválido.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>DNI *</label>
+              <input
+                type="text"
+                placeholder="Sin puntos"
+                class="admin-input"
+                id="dni"
+                formControlName="dni"
+                maxlength="8"
+                autocomplete="off"
+              />
+              <span
+                *ngIf="userForm.get('dni')?.touched && userForm.get('dni')?.errors?.['required']"
+                style="color: var(--error-red)"
+              >
+                Por favor, ingrese un DNI.
+              </span>
+              <span
+                *ngIf="userForm.get('dni')?.touched && userForm.get('dni')?.errors?.['minlength']"
+                style="color: var(--error-red)"
+              >
+                El DNI debe contener al menos 8 caracteres.
+              </span>
+              <span
+                *ngIf="userForm.get('dni')?.touched && userForm.get('dni')?.errors?.['pattern']"
+                style="color: var(--error-red)"
+              >
+                Formato de DNI inválido. Solo números.
+              </span>
+            </div>
+            <div class="form-group">
+              <label>Rol del Usuario *</label>
+              <select class="admin-input" id="role" formControlName="role">
+                <option value="" selected disabled>-- Selecciona un rol --</option>
+                <option *ngFor="let role of roleList" [value]="role.name">{{ role.name }}</option>
+              </select>
+              <span
+                *ngIf="userForm.get('role')?.touched && userForm.get('role')?.errors?.['required']"
+                style="color: var(--error-red)"
+              >
+                Debes seleccionar al menos un rol.
+              </span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Comisiones Asignadas *</label>
+              <div class="checkbox-group-container" formArrayName="comissions">
+                @for (comission of comissionList; track comission; let i = $index) {
+                  <div class="checkbox-item">
+                    <input type="checkbox" [formControlName]="i" [id]="'comission-' + i" />
+                    <label [for]="'comission-' + i">Comisión {{ comission }}</label>
+                  </div>
+                }
+              </div>
+            </div>
+
+            <div class="form-group" *ngIf="userForm.get('role')?.value === 'ALUMNO'">
+              <label>N° de Curso</label>
+              <input
+                type="number"
+                placeholder="Ej: 24"
+                class="admin-input"
+                id="classroom_number"
+                formControlName="classroom_number"
+              />
+            </div>
+          </div>
+
+          <div
+            class="form-group full-width"
+            *ngIf="userForm.get('role')?.value === 'ALUMNO' && subjectList.length > 0"
+          >
+            <label>Materias Asignadas</label>
+            <div class="checkbox-group-container horizontal" formArrayName="assigned_subjects">
+              <div
+                class="checkbox-item"
+                *ngFor="let control of subjectFormArray.controls; let i = index"
+              >
+                <input type="checkbox" [formControlName]="i" [id]="'subject-' + i" />
+                <label [for]="'subject-' + i">{{ subjectList[i]?.subject_name }}</label>
+              </div>
+            </div>
+          </div>
+
+          <button
+            class="btn-submit"
+            [style.background-color]="mode === 'crear' ? '#3f3689' : '#2ecc71'"
+            [disabled]="userForm.invalid"
+          >
+            {{ mode === 'crear' ? 'Registrar Usuario' : 'Guardar Cambios' }}
+          </button>
+        </form>
+      </div>
+
+      <div class="form-card delete-card" *ngIf="mode === 'eliminar'">
+        <header class="form-header delete-header">
+          <h4>Eliminar Usuario</h4>
+        </header>
+        <div class="delete-content">
+          <p>Ingresa el DNI del usuario que deseas dar de baja permanentemente.</p>
+          <div class="form-group search-container" style="position: relative">
+            <label for="dni-delete">DNI del Usuario</label>
+            <input
+              id="dni-delete"
+              type="text"
+              [formControl]="dniDeleteControl"
+              placeholder="Ej: 42333444"
+              class="admin-input error-focus"
+              autocomplete="off"
+            />
+            <ul
+              class="autocomplete-results"
+              *ngIf="usersFound$"
+              style="
+                width: 100%;
+                z-index: 1000;
+                list-style: none;
+                padding: 0;
+                margin: 4px 0 0 0;
+                overflow-y: scroll;
+                max-height: 200px;
+              "
+            >
+              <li *ngFor="let user of usersFound$ | async" class="user-item" style="width: 100%">
+                <button type="button" class="user-card" (click)="selectUserToDelete(user)">
+                  <div class="user-avatar">{{ user.name.charAt(0).toUpperCase() }}</div>
+                  <div class="user-info">
+                    <span class="user-name">{{ user.name }}</span>
+                    <span class="user-dni">DNI: {{ user.dni }}</span>
+                  </div>
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div class="selected-user-preview" *ngIf="userToDeleteSel">
+            <p>
+              Vas a eliminar a: <strong>{{ userToDeleteSel.name }}</strong> (DNI:
+              {{ userToDeleteSel.dni }})
+            </p>
+          </div>
+          <button
+            class="btn-submit btn-delete"
+            (click)="deleteUser()"
+            [disabled]="!userToDeleteSel"
+          >
+            Eliminar Permanentemente
+          </button>
+        </div>
+      </div>
+
+      <div class="empty-state" *ngIf="!mode">
+        <span class="material-symbols-outlined">manage_accounts</span>
+        <p>Selecciona una acción para comenzar</p>
+      </div>
+    </div>
+  </div>
+</main>

@@ -1,0 +1,36 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<div class="aviso-detalle-wrapper">
+  <h2>Avisos</h2>
+
+  @if (currentNotice$ | async; as currentNotice) {
+    <div class="detalle-view-card">
+      <header class="detalle-view-header">
+        @if (autor$ | async; as autor) {
+          <div class="autor-perfil-block">
+            <div class="profile-avatar-icon">
+              <span class="material-symbols-outlined">face</span>
+            </div>
+            <div class="autor-meta-text">
+              <p class="nombre-display">Por: {{ autor.name }}</p>
+              <span class="motivo-tag" [class.info-tag]="currentNotice.type === 'info'">
+                {{ currentNotice.type === 'info' ? 'Aviso Importante' : 'Mensaje' }}
+              </span>
+            </div>
+          </div>
+        }
+        <div class="fecha-envio-stamp">
+          <span class="material-symbols-outlined">schedule</span>
+          Enviado: {{ formatDate(currentNotice.created_at) }}
+        </div>
+      </header>
+  
+      <div class="detalle-view-body" [innerHTML]="currentNotice.message"></div>
+    </div>
+  }
+</div>

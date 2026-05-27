@@ -1,0 +1,49 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<h3>Materia Correspondiente</h3>
+
+<div class="tasks-container">
+  <div class="selection-panel">
+    
+    <div class="subjects-list">
+      <div 
+        class="subject-card" 
+        *ngFor="let m of materias" 
+        [style.background-color]="m.color"
+        (click)="seleccionarMateria(m)"
+        [class.active]="m.id === materiaSeleccionada.id">
+        {{ m.nombre | uppercase }}
+      </div>
+    </div>
+  </div>
+
+  <div class="tasks-detail-panel" *ngIf="materiaSeleccionada">
+    <div class="tasks-header">
+      <h3>Tareas Pendientes</h3>
+    </div>
+
+    <div class="tasks-list-container">
+      <div class="current-subject-banner" [style.background-color]="materiaSeleccionada.color">
+        <h4>{{ materiaSeleccionada.nombre | uppercase }}</h4>
+      </div>
+
+      <div class="tasks-scroll-area">
+        <div class="task-item" *ngFor="let tarea of tareasFiltradas">
+          <div class="task-main-info">
+            <p class="task-title">{{ tarea.titulo }}</p>
+            <p class="task-description">{{ tarea.descripcion }}</p>
+          </div>
+          <div class="task-meta">
+            <p class="task-date">Vence: {{ tarea.fechaVencimiento }}</p>
+            <a class="view-link" routerLink="['/entrega', tarea.id]">Ver Actividad</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,148 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<div class="classroom-container" *ngIf="classroomData$ | async as classroom">
+  
+  <aside class="sections-sidebar" [style.background-color]="subjectColor">
+    <div class="sidebar-header">
+      <h3>{{ classroom.subjectName }}</h3>
+      <div class="divider"></div>
+    </div>
+
+    <ul class="sections-list">
+      <li
+        *ngFor="let topic of classroom.topics"
+        class="section-item"
+        [class.active]="(selectedTopic$ | async)?.id === topic.id"
+        (click)="selectTopic(topic)"
+      >
+        <div class="indicator"></div>
+        <p>{{ topic.title }}</p>
+      </li>
+    </ul>
+  </aside>
+
+  <div class="content-area">
+    <div
+      class="content-card"
+      *ngIf="selectedTopic$ | async as activeTopic; else evaluateEmptyState"
+    >
+      <div class="topic-actions" *ngIf="(authService.userRole$ | async) === 'DOCENTE'">
+        <button class="btn-topic-action edit" [routerLink]="'/class-management'" (click)="managementMode('editar')">
+          <span class="material-symbols-outlined">edit</span>
+          Editar
+        </button>
+        <button class="btn-topic-action delete" (click)="deleteCurrentTopic(classroom.id)">
+          <span class="material-symbols-outlined">delete</span>
+          Eliminar
+        </button>
+      </div>
+
+      <div class="text-content">
+        <h3>{{ activeTopic.title }}</h3>
+        <div [innerHTML]="activeTopic.content"></div>
+      </div>
+
+      <div class="topic-resources-container">
+        <div class="resources-files-box">
+          <h4>Material Adjunto</h4>
+          <ul class="resources-file-list">
+            <li>
+              <span class="material-symbols-outlined icon-pdf">description</span>
+              <span class="file-info">
+                <span class="file-name">Apunte_Teorico_Testing.pdf</span>
+                <span class="file-size">2.4 MB</span>
+              </span>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-zip">folder_zip</span>
+              <span class="file-info">
+                <span class="file-name">Proyecto_Base_Pruebas.zip</span>
+                <span class="file-size">14.8 MB</span>
+              </span>
+            </li>
+            <li>
+              <span class="material-symbols-outlined icon-link">link</span>
+              <span class="file-info">
+                <span class="file-name">Documentación Oficial (Link)</span>
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="resources-activity-box" *ngIf="assignedActivity$ | async as activity">
+          <div class="activity-status-card">
+            <span class="material-symbols-outlined activity-icon">assignment</span>
+            <div class="activity-meta">
+              <h5>{{ activity.title }}</h5>
+              <p>Fecha límite: {{ formatDate(activity.date_limit) }}</p>
+            </div>
+          </div>
+          @if (authService.userRole$ | async; as role) {
+            @if (activity.type === 'tarea') {
+              <button
+                class="btn-go-activity"
+                [routerLink]="role === 'DOCENTE' ? ['/manage-tasks'] : ['/send-task', activity.id]"
+              >
+                <span>{{ role === 'DOCENTE' ? 'Gestionar' : 'Ir a la Actividad' }}</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
+            } @else if (activity.type === 'parcial') {
+              <button
+                class="btn-go-activity"
+                [routerLink]="role === 'DOCENTE' ? ['/manage-finals'] : ['/send-task', activity.id]"
+              >
+                <span>{{ role === 'DOCENTE' ? 'Gestionar' : 'Ir al Parcial' }}</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
+            }
+          }
+        </div>
+      </div>
+    </div>
+
+    <ng-template #evaluateEmptyState>
+      <ng-container>
+        <div class="empty-course-state" *ngIf="classroom.topics.length === 0">
+          <div class="message-wrapper">
+            <span class="material-symbols-outlined central-icon">school</span>
+            <h3>¡Bienvenido a tu nuevo curso!</h3>
+            <p>Aún no hay material de estudio registrado en esta materia.</p>
+
+            <div class="teacher-hint" *ngIf="(authService.userRole$ | async) === 'DOCENTE'">
+              <p>Para comenzar a cargar contenido, haz clic en el botón flotante situado abajo a la derecha.</p>
+              <span class="material-symbols-outlined hint-arrow">south_east</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="empty-course-state" *ngIf="classroom.topics.length > 0">
+          <div class="message-wrapper">
+            <span class="material-symbols-outlined central-icon">arrow_back</span>
+            <h3>Selecciona una sección</h3>
+            <p>Elige un tema de la barra lateral para visualizar su contenido.</p>
+          </div>
+        </div>
+      </ng-container>
+    </ng-template>
+  </div>
+</div>
+
+<ng-template #loadingData>
+  <div class="loading-state">
+    <p>Cargando contenidos del curso...</p>
+  </div>
+</ng-template>
+
+<button
+  class="fab-add"
+  (click)="managementMode('crear')"
+  *ngIf="(authService.userRole$ | async) === 'DOCENTE'"
+  routerLink="/class-management"
+>
+  <span class="material-symbols-outlined">add</span>
+</button>

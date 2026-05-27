@@ -1,0 +1,77 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="gestion-tps-container" *ngIf="rol === 'DOCENTE'">
+    <main class="tps-panel">
+      <header class="panel-header">
+        <h2>Gestión de Trabajos Prácticos</h2>
+      </header>
+
+      <div class="tp-list">
+        @for (task of taskList$ | async; track task.id) {
+          <article class="tp-card" [style.border-left-color]="currentSubject.color">
+            <div class="tp-header">
+              <div class="tp-title-area">
+                <h3>{{ task.title }}</h3>
+                <div class="deadline-badge">
+                  <span class="material-symbols-outlined">schedule</span>
+                  <span>Límite: {{ formatDate(task.date_limit) }}</span>
+                </div>
+              </div>
+              <div class="tp-actions">
+                <button class="btn-icon delete" title="Eliminar" (click)="deleteTask(task.id!)">
+                  <span class="material-symbols-outlined">delete</span>
+                </button>
+              </div>
+            </div>
+
+            @if (taskStats$ | async; as task) {
+              <div class="tp-stats-grid">
+                <div class="stat-item">
+                  <span class="count">{{ task.provided }}/{{ task.totalStudents }}</span>
+                  <span class="label">TOTAL ENTREGADOS</span>
+                </div>
+                <div class="stat-item">
+                  <span class="count success">{{ task.corrected }}</span>
+                  <span class="label">CORREGIDOS</span>
+                </div>
+                <div class="stat-item">
+                  <span class="count warning">{{ task.not_provided }}</span>
+                  <span class="label">NO ENTREGADOS</span>
+                </div>
+              </div>
+            }
+
+            <div class="tp-footer">
+              <div class="attachment-box">
+                <span class="material-symbols-outlined">description</span>
+                <button class="filename" [routerLink]="['/see-assignment', task.id]">
+                  Leer Consigna
+                </button>
+              </div>
+              <a class="btn-ver-entregas" routerLink="/see-deliveries">
+                Ver Entregas
+                <span class="material-symbols-outlined">chevron_right</span>
+              </a>
+            </div>
+          </article>
+        } @empty {
+          <div class="empty-tp-placeholder">
+            <div class="icon-circle">
+              <span class="material-symbols-outlined">assignment_late</span>
+            </div>
+            <h3>No hay trabajos prácticos asignados</h3>
+            <p>
+              Aún no se crearon actividades evaluativas para esta materia. Podés subir una nueva
+              consigna para que los alumnos comiencen a entregar.
+            </p>
+          </div>
+        }
+      </div>
+    </main>
+  </div>
+</main>

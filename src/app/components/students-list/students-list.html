@@ -1,0 +1,106 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="alumnos-lista-container" *ngIf="rol === 'DOCENTE'">
+    <div class="selection-panel">
+      <h3>Materias Asignadas</h3>
+      <div class="subjects-list">
+        @for (subject of professorSubjects$ | async; track subject.id) {
+          <button
+            class="subject-chip-btn"
+            [style.background-color]="subject.color"
+            [class.selected]="subject.id === selectedSubject?.id"
+            (click)="getSelectedSubject(subject.id!)"
+          >
+            {{ subject.subject_name | uppercase }}
+          </button>
+        }
+      </div>
+    </div>
+    @if (selectedSubject) {
+      <header class="seccion-header">
+        <div class="title-group">
+          <h2>Lista Alumnos</h2>
+        </div>
+
+        <div class="header-tools">
+          <button class="btn-export-accent" (click)="downloadStudentList(selectedSubject.subject_name.toLowerCase())">
+            <span class="material-symbols-outlined">ios_share</span>
+            <span>Exportar Lista</span>
+          </button>
+        </div>
+      </header>
+
+      <div class="tabla-container">
+        <table class="cursitu-table">
+          <thead>
+            <tr>
+              <th>Nombre Completo</th>
+              <th>Curso</th>
+              <th>Comisión</th>
+              <th>Tiene Grupo</th>
+              <th class="text-center">Número de Grupo</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (student of studentList; track student.id) {
+              <tr>
+                <td class="col-nombre">
+                  <div class="alumno-perfil">
+                    <div class="avatar-sm">{{ student.name.charAt(0) | uppercase }}</div>
+                    <span>{{ student.name | uppercase }}</span>
+                  </div>
+                </td>
+                <td>{{ student.classroom_number }}</td>
+                <td>{{ student.comission }}</td>
+                @if (student.hasGroupInSubject) {
+                  <td>
+                    <span class="badge badge-si" [style.border-color]="selectedSubject.color">
+                      SI
+                    </span>
+                  </td>
+
+                  <td class="text-center">
+                    <span class="group-number">{{ student.groupNumber }}</span>
+                  </td>
+                } @else {
+                  <td>
+                    <span class="badge badge-no"> NO </span>
+                  </td>
+
+                  <td class="text-center">
+                    <span class="group-number">-</span>
+                  </td>
+                }
+              </tr>
+            } @empty {
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+              <td>-</td>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <div
+        class="empty-groups-placeholder"
+        style="max-width: 600px; margin: 2rem auto; min-height: 250px"
+      >
+        <div class="placeholder-icon-box">
+          <span class="material-symbols-outlined">list</span>
+        </div>
+        <h4>Por favor, seleccione una materia</h4>
+        <p>
+          Debe hacer clic en una de las materias asignadas arriba para acceder al listado de alumnos
+          correspondiente.
+        </p>
+      </div>
+    }
+  </div>
+</main>

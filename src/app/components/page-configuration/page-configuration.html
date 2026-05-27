@@ -1,0 +1,67 @@
+<div class="config-container">
+  <header class="config-header">
+    <h2>Configuración de la Plataforma</h2>
+    <p>Personaliza tu experiencia dentro de CursITU</p>
+  </header>
+
+  <div class="config-grid">
+    <!-- Card: Interfaz -->
+    <section class="config-card">
+      <div class="card-icon">
+        <span class="material-symbols-outlined">palette</span>
+      </div>
+      <div class="card-content">
+        <h3>Apariencia</h3>
+        <p>Ajusta el tema visual de la aplicación.</p>
+
+        <div class="setting-item">
+          <span>Modo Oscuro</span>
+          <label class="switch">
+            <input type="checkbox" [checked]="isDark" (change)="toggleTheme()" />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- Card: Idioma -->
+    <section class="config-card">
+      <div class="card-icon">
+        <span class="material-symbols-outlined">language</span>
+      </div>
+      <div class="card-content">
+        <h3>Idioma y Región</h3>
+        <p>Selecciona el idioma de los menús y notificaciones.</p>
+
+        <select class="config-select">
+          <option value="es">Español (Argentina)</option>
+          <option value="en">English (US)</option>
+          <option value="pt">Português</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Card: Notificaciones -->
+    <section class="config-card">
+      <div class="card-icon">
+        <span class="material-symbols-outlined">notifications</span>
+      </div>
+      <div class="card-content">
+        <h3>Notificaciones</h3>
+        <p>Gestiona los avisos de entregas y parciales.</p>
+
+        <div class="setting-item">
+          <span>Alertas de sonido</span>
+          <label class="switch">
+            <input type="checkbox" checked />
+            <span class="slider round"></span>
+          </label>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="config-actions">
+    <button class="btn-save-config">Guardar Cambios</button>
+  </div>
+</div>

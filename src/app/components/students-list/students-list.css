@@ -1,0 +1,289 @@
+/* === ESTILOS BASE === */
+.alumnos-lista-container {
+  padding: 30px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.btn-back {
+  background: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--primary-purple);
+}
+
+.seccion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 30px 0;
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.seccion-header h2 {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #333;
+  margin: 0;
+}
+
+/* === NUEVO BOTÓN DE EXPORTAR === */
+.btn-export-accent {
+  background: var(--subject-color);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(63, 54, 137, 0.2);
+}
+
+.btn-export-accent:hover {
+  background: rgb(from var(--subject-color) r g b / 0.7);
+  transform: translateY(-2px);
+}
+
+.header-tools {
+  display: flex;
+  gap: 15px;
+}
+
+.search-box {
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  width: 300px;
+  transition: border-color 0.3s;
+}
+
+.search-box:focus-within {
+  border-color: var(--subject-color);
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  padding-left: 10px;
+  font-size: 0.9rem;
+  width: 100%;
+}
+
+.selection-panel {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+.subjects-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 120px;
+  overflow-y: scroll;
+}
+
+.subject-chip-btn {
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  color: white;
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.subject-chip-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.subject-chip-btn.selected {
+  box-shadow: inset 0 0 0 4px rgba(255, 255, 255, 0.35), 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* === PLACEHOLDER GRUPOS VACÍOS === */
+.empty-groups-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 12px;
+  border: 2px dashed #e2e8f0; /* Estilo clásico de zona vacía/configurable */
+  margin-top: 10px;
+  min-height: 320px;
+  box-sizing: border-box;
+}
+
+.placeholder-icon-box {
+  background: #f1f5f9;
+  color: #64748b;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+.placeholder-icon-box .material-symbols-outlined {
+  font-size: 2rem;
+}
+
+.empty-groups-placeholder h4 {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #334155;
+  margin: 0 0 8px 0;
+}
+
+.empty-groups-placeholder p {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #94a3b8;
+  max-width: 340px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* === TABLA MEJORADA === */
+.tabla-container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  overflow-y: scroll;
+  border: 1px solid #eee;
+  max-height: 42vh;
+}
+
+.cursitu-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.cursitu-table thead {
+  background: var(--subject-color);
+  color: white;
+}
+
+.cursitu-table th {
+  padding: 18px 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+}
+
+.cursitu-table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid #f5f5f5;
+  color: #444;
+  font-weight: 600;
+  vertical-align: middle;
+}
+
+.text-center { text-align: center; }
+
+.alumno-perfil {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  background: #eef2ff;
+  color: #3f3689;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 800;
+  font-size: 0.75rem;
+}
+
+.badge {
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.badge-no { background: #fee; color: #e74c3c; }
+.badge-si { background: #e8f8f0; color: #2ecc71; }
+
+.group-number {
+  background: #f8f9fa;
+  padding: 4px 10px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  font-size: 0.9rem;
+}
+
+/* === ADAPTACIÓN RESPONSIVA === */
+@media (max-width: 1024px) {
+  .alumnos-lista-container { padding: 20px; }
+  .seccion-header h2 { font-size: 1.4rem; }
+  .search-box { width: 220px; }
+  .cursitu-table th, .cursitu-table td { padding: 12px 15px; }
+}
+
+@media (max-width: 850px) {
+  .seccion-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .title-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .header-tools, .search-box {
+    width: 100%;
+  }
+  .tabla-container { overflow-x: auto; }
+  .cursitu-table { min-width: 650px; }
+}
+
+@media (max-height: 600px) {
+  .alumnos-lista-container { padding-top: 10px; }
+  .seccion-header { margin-bottom: 15px; }
+  .cursitu-table td { padding: 8px 20px; }
+}

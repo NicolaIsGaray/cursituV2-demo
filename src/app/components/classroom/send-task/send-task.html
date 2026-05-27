@@ -1,0 +1,137 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+<div *ngIf="currentSubject$ | async as subject">
+  <!-- Encabezado con el nombre de la materia -->
+  <div class="course-header">
+    <h2>{{subject.subject_name}}</h2>
+  </div>
+
+  <div class="assignment-wrapper" *ngIf="currentActivity$ | async as activity">
+  
+  <!-- Área Principal de la Actividad -->
+  <main class="delivery-area">
+    <div class="delivery-card">
+      
+      <!-- Encabezado de la Tarea -->
+      <header class="assignment-header">
+        <div class="header-main-info">
+          <span class="material-symbols-outlined assignment-hero-icon">assignment</span>
+          <h3 class="assignment-title">Entrega: {{ activity.title }}</h3>
+        </div>
+        
+        <!-- Badge de Fecha Límite -->
+        <div class="deadline-badge">
+          <span class="material-symbols-outlined">timer</span>
+          <p>Vence: <span>{{ formatDateDisplay(activity.date_limit) }}</span></p>
+        </div>
+      </header>
+
+      <section class="assignment-instruction-box">
+        <h4>Consigna de la Actividad</h4>
+        <div class="instruction-body" [innerHTML]="activity.content"></div>
+      </section>
+
+      @if (submissionStatus$ | async; as status) {
+        <div class="delivery-status-banner available" *ngIf="isDeliveryOpen(activity.date_limit)">
+          <span class="material-symbols-outlined">lock_open</span>
+          <div class="banner-text">
+            <h5>Habilitado para entrega</h5>
+            <p>El período de recepción de soluciones se encuentra activo actualmente.</p>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE CARGA / ESCRITURA (Visible solo si no ha entregado aún) -->
+        <div class="submission-form-container" *ngIf="status !== 'ENTREGADO'">
+          <div class="delivery-section" *ngIf="activity.allowed_format === 'texto'">
+            <label for="student-response">Tu respuesta escrita:</label>
+            <div class="editor-wrapper">
+              <quill-editor
+                class="content-editor"
+                id="student-response"
+                theme="snow"
+                [modules]="editorModules"
+                placeholder="Desarrolla o redacta tu entrega académica aquí..."
+              ></quill-editor>
+            </div>
+          </div>
+  
+          <!-- Variante 2: El formato requerido es Archivo o Carpeta ZIP -->
+          <div class="delivery-section" *ngIf="activity.allowed_format === 'archivo' || activity.allowed_format === 'carpeta' && status !== 'ENTREGADO'">
+            <label>Carga de entregable estructurado</label>
+            <div class="upload-box">
+              <div class="format-indicator-label">
+                <span class="material-symbols-outlined">info</span>
+                <p>Esta tarea requiere un formato de tipo: <strong>{{ activity.allowed_format | uppercase }}</strong></p>
+              </div>
+              
+              <button type="button" class="upload-area-btn" (click)="triggerFileInput()">
+                <span class="material-symbols-outlined">cloud_upload</span>
+                <span>{{ selectedFile ? selectedFile.name : 'Seleccionar archivo desde el equipo' }}</span>
+              </button>
+              
+              <p class="nota-text">
+                <span class="material-symbols-outlined">warning</span>
+                <span><b>Importante:</b> Revisa que la compilación y nomenclatura del archivo sea la correcta antes de confirmar.</span>
+              </p>
+            </div>
+          </div>
+  
+          <!-- Comentarios Adicionales Comunes -->
+          <form class="delivery-section" [formGroup]="submitForm" *ngIf="status !== 'ENTREGADO'">
+            <label for="student-comment">Observaciones para el docente (Opcional)</label>
+            <div class="comment-container">
+              <quill-editor
+                class="content-editor"
+                id="student-response"
+                formControlName="comment"
+                theme="snow"
+                [modules]="editorModules"
+                placeholder="¿Algún comentario que desees brindarle al docente?"
+                style="width: 100%;"
+              ></quill-editor>
+            </div>
+          </form>
+  
+          <!-- Botón de Acción Principal -->
+          <div class="submit-container" *ngIf="status !== 'ENTREGADO'">
+            <button class="submit-btn" (click)="sendActivity(activity)">
+              Realizar Entrega
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (submissionStatus$ | async; as status) {
+        <div class="submission-summary-box" *ngIf="status === 'ENTREGADO'">
+          <header class="summary-header">
+            <h4>Estado de tu Entrega</h4>
+            
+            <!-- Badge Dinámico: A término vs Fuera de término -->
+            <span class="status-badge" [class.on-time]="submissionTimeStatus === 'A término'" [class.late]="submissionTimeStatus === 'Fuera de término'">
+              <span class="material-symbols-outlined">
+                {{ submissionTimeStatus === 'A término' ? 'check_circle' : 'running_with_errors' }}
+              </span>
+              <span>Entregado {{ submissionTimeStatus | uppercase}}</span>
+            </span>
+          </header>
+  
+          <div class="summary-details">
+            <p><strong>Fecha de registro:</strong> {{ formatDateDisplay(submissionDate) }}</p>
+            <p *ngIf="submissionComment"><strong>Tu comentario:</strong> <em>"{{ submissionComment }}"</em></p>
+            
+            <div class="receipt-checkmark">
+              <span class="material-symbols-outlined">verified</span>
+              <p>El material fue guardado en el servidor bajo el identificador de alumno.</p>
+            </div>
+          </div>
+        </div>
+      }
+
+    </div>
+  </main>
+</div>
+</div>

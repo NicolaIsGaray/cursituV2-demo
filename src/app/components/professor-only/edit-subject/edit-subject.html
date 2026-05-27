@@ -1,0 +1,61 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="edit-materia-container" *ngIf="rol === 'DOCENTE'">
+    <!-- CORRECCIÓN: Trasladamos [formGroup] aquí para abarcar ambas columnas -->
+    <form
+      class="edit-card"
+      *ngIf="currentSubject$ | async as subject"
+      [formGroup]="subjectForm"
+      (ngSubmit)="OnSubmit()"
+      [style.--subject-color]="subjectForm.get('color')?.value"
+    >
+      <!-- Lado Izquierdo: Formulario Principal -->
+      <div class="form-section">
+        <header class="form-header">
+          <h3>Editar Materia</h3>
+          <p>Personaliza el nombre y la identidad visual de tu asignatura.</p>
+        </header>
+
+        <div class="input-group">
+          <label>Nombre de la materia</label>
+          <input
+            type="text"
+            class="input-field"
+            formControlName="name"
+            placeholder="Ej: Programación Estructurada"
+          />
+        </div>
+
+        <div class="actions-footer">
+          <button
+            class="btn-guardar"
+            type="submit"
+            [style.background]="subjectForm.get('color')?.value"
+          >
+            Guardar Cambios
+          </button>
+        </div>
+      </div>
+
+      <!-- Lado Derecho / Esquina: Selector de Color -->
+      <div class="color-overlay-section" [style.background-color]="subjectForm.get('color')?.value">
+        <div class="color-picker-float">
+          <input type="color" id="colorInput" formControlName="color" class="hidden-input" />
+          <label for="colorInput" class="color-circle-btn" title="Cambiar color de fondo">
+            <span class="material-symbols-outlined">palette</span>
+          </label>
+        </div>
+
+        <div class="color-label-mobile">
+          <span class="material-symbols-outlined">format_paint</span>
+          Color de fondo
+        </div>
+      </div>
+    </form>
+  </div>
+</main>

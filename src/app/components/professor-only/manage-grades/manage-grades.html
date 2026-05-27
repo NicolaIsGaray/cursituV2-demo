@@ -1,0 +1,72 @@
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="notas-container" *ngIf="rol === 'DOCENTE'">
+    <main class="planilla-content">
+      <nav class="top-nav">
+        <button class="btn-back" (click)="goBack()">
+          <span class="material-symbols-outlined">arrow_back</span>
+          Regresar
+        </button>
+      </nav>
+
+      <!-- FILTRO ESTILIZADO (Segmented Control) -->
+      <div class="filter-wrapper">
+        <div class="filter-scroll">
+          @for (filter of filterOptions; track filter.value) {
+            <button
+              class="filter-chip"
+              [class.active]="selectedFilter === filter.value"
+              (click)="selectFilter(filter.label, filter.value)"
+            >
+              {{ filter.label }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="planilla-wrapper">
+        @if (currentSubject$ | async; as subject) {
+          <div class="table-header-banner" [style.background]="subject.color">
+            {{ subject.subject_name }} - LISTADO DE ALUMNOS
+          </div>
+
+          <table class="notas-table">
+            <thead>
+              <tr>
+                <th>Alumno</th>
+                <th>Actividad</th>
+                <th>Nota</th>
+                <th class="text-right">Acciones</th>
+              </tr>
+            </thead>
+            @for (grade of gradesList$ | async; track grade.submissionId) {
+              <tbody>
+                <tr>
+                  <td class="alumno-name" data-label="Alumno">{{ grade.studentName }}</td>
+                  <td data-label="Actividad">{{ grade.activityName }}</td>
+                  <td data-label="Nota">
+                    <input
+                      type="number"
+                      class="input-nota"
+                      type="number"
+                      placeholder="-"
+                      min="0"
+                      max="10"
+                      [(ngModel)]="grade.grade"
+                      (keydown)="validateKeyboard($event)"
+                      (input)="grade.grade = grade.grade! > 10 ? 10 : grade.grade"
+                    />
+                  </td>
+                  <td class="actions-cell text-right" data-label="Acciones">
+                    <button class="btn-save" title="Guardar" (click)="saveGrade(grade)">
+                      <span class="material-symbols-outlined">save</span>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            }
+          </table>
+        }
+      </div>
+    </main>
+  </div>
+</main>

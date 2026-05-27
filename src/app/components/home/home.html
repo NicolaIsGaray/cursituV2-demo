@@ -1,0 +1,299 @@
+<h2>Página de Inicio</h2>
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="dashboard-grid" *ngIf="rol === 'ALUMNO'">
+    <div class="card wide">
+      <h3>Avisos Recientes</h3>
+      <div class="card-content empty">
+        <p>No hay avisos recientes</p>
+      </div>
+    </div>
+
+    <div class="card tall">
+      <h3>Entregas Pendientes</h3>
+
+      @if (pendingAssignments$ | async; as pendingList) {
+        @if (pendingList.length > 0) {
+          <div class="card-content">
+            <ul class="pending-list">
+              <li *ngFor="let item of pendingList" class="pending-item">
+                <div class="pending-info">
+                  <span class="subject-name">{{ item.title }}</span>
+
+                  <span class="subject-tag">Materia: {{ item.subjectNameResolved }}</span>
+
+                  <span class="due-date">
+                    Vence: {{ item.dateLimit | date: 'dd/MM/yyyy HH:mm' }}
+                  </span>
+                </div>
+
+                <button class="btn-goto">
+                  <span class="material-symbols-outlined">arrow_forward</span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        } @else {
+          <div class="card-content empty">
+            <p>No tienes entregas pendientes</p>
+            <b class="success-text">¡Estás al día!</b>
+          </div>
+        }
+      } @else {
+        <div class="card-content loading">
+          <p>Verificando entregas y materias...</p>
+        </div>
+      }
+    </div>
+
+    <div class="card small">
+      <h3>Última Materia Vista</h3>
+      @if (lastActivity$ | async; as activity) {
+        <div class="actividad-recent-content">
+          <div class="actividad-info-main">
+            @if (lastActivitySubject$ | async; as subject) {
+              <span class="actividad-badge" [style.background-color]="'var(--subject-color)'">
+                {{ subject.subject_name | uppercase }}
+              </span>
+              <h4 class="actividad-titulo">"{{ activity.title }}"</h4>
+
+              <button
+                class="btn-actividad-link"
+                (click)="
+                  goToActivity('/current-classroom/' + lastActivityVisited.classroomId, subject.id!)
+                "
+              >
+                <span>Ir a la actividad</span>
+                <span class="material-symbols-outlined">arrow_forward</span>
+              </button>
+            }
+          </div>
+
+          <footer class="actividad-meta-footer">
+            @if (lastActivityAssignment$ | async; as assignment) {
+              @if (assignment.type === 'tarea') {
+                <span class="meta-item">
+                  <span class="material-symbols-outlined">description</span>
+                  Trabajo Práctico: {{ assignment.title }}
+                </span>
+              } @else if (assignment.type === 'parcial') {
+                <span class="meta-item">
+                  <span class="material-symbols-outlined">description</span>
+                  Parcial: {{ assignment.title }}
+                </span>
+              }
+            } @else {
+              <span class="meta-item">
+                <span class="material-symbols-outlined">description</span>
+                No cuenta con entrega.
+              </span>
+            }
+            <span class="meta-item-time"> Hace 2 minutos. </span>
+          </footer>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-icon-wrapper">
+            <span class="material-symbols-outlined">history</span>
+          </div>
+          <p>No has visitado ninguna actividad hoy</p>
+        </div>
+      }
+    </div>
+
+    <div class="card wide">
+      <h3>Fechas Importantes</h3>
+      <div class="card-content empty">
+        <p>No hay ninguna fecha importante anunciada</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dashboard-container" *ngIf="rol === 'DOCENTE'">
+    <section class="action-banner">
+      <a
+        class="btn-create-activity"
+        routerLink="/subjects"
+        style="text-decoration: none; width: 80%"
+      >
+        <span>Gestión de Materias</span>
+      </a>
+    </section>
+
+    <div class="info-grid">
+      <div class="main-stats">
+        <div class="stat-card">
+          <h3>Última Actividad Visitada</h3>
+
+          @if (lastActivity$ | async; as activity) {
+            <div class="actividad-recent-content">
+              <div class="actividad-info-main">
+                @if (lastActivitySubject$ | async; as subject) {
+                  <span class="actividad-badge" [style.background-color]="'var(--subject-color)'">
+                    {{ subject.subject_name | uppercase }}
+                  </span>
+                  <h4 class="actividad-titulo">"{{ activity.title }}"</h4>
+
+                  <button
+                    class="btn-actividad-link"
+                    (click)="
+                      goToActivity(
+                        '/current-classroom/' + lastActivityVisited.classroomId,
+                        subject.id!
+                      )
+                    "
+                  >
+                    <span>Ir a la actividad</span>
+                    <span class="material-symbols-outlined">arrow_forward</span>
+                  </button>
+                }
+              </div>
+
+              <footer class="actividad-meta-footer">
+                @if (lastActivityAssignment$ | async; as assignment) {
+                  @if (assignment.type === 'tarea') {
+                    <span class="meta-item">
+                      <span class="material-symbols-outlined">description</span>
+                      Trabajo Práctico: {{ assignment.title }}
+                    </span>
+                  } @else if (assignment.type === 'parcial') {
+                    <span class="meta-item">
+                      <span class="material-symbols-outlined">description</span>
+                      Parcial: {{ assignment.title }}
+                    </span>
+                  }
+                } @else {
+                  <span class="meta-item">
+                    <span class="material-symbols-outlined">description</span>
+                    No cuenta con entrega.
+                  </span>
+                }
+                <span class="meta-item-time"> {{ activityTime.timeAgo }} </span>
+              </footer>
+            </div>
+          } @else {
+            <div class="empty-state">
+              <div class="empty-icon-wrapper">
+                <span class="material-symbols-outlined">history</span>
+              </div>
+              <p>No ha visitado ninguna actividad hoy</p>
+            </div>
+          }
+        </div>
+
+        <div class="stat-card">
+          <h3>Horarios de Cursada</h3>
+
+          @for (subject of professorSubjects$ | async; track subject.id) {
+            <div
+              class="subject-schedule-group"
+              style="margin-bottom: 16px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 12px"
+            >
+              <h4
+                class="schedule-subject-name"
+                [style.color]="subject.color"
+                style="margin: 0 0 8px 0; font-size: 1rem; font-weight: 700"
+              >
+                {{ subject.subject_name }}
+              </h4>
+
+              <div
+                class="schedule-slots-list"
+                style="display: flex; flex-direction: column; gap: 4px"
+              >
+                @for (slot of subject.schedule; track slot.day + slot.startTime) {
+                  <div
+                    class="schedule-slot-item"
+                    style="
+                      font-size: 0.85rem;
+                      color: #475569;
+                      display: flex;
+                      align-items: center;
+                      gap: 6px;
+                    "
+                  >
+                    <span class="material-symbols-outlined" style="font-size: 16px; color: #94a3b8"
+                      >calendar_today</span
+                    >
+                    <strong>{{ translateDayToSpanish(slot.day) }}:</strong>
+                    <span>{{ slot.startTime }} hs a {{ slot.endTime }} hs</span>
+                  </div>
+                } @empty {
+                  <p style="font-size: 0.8rem; color: #94a3b8; margin: 0; font-style: italic">
+                    Sin horarios asignados
+                  </p>
+                }
+              </div>
+            </div>
+          } @empty {
+            <div class="empty-state">
+              <span class="material-symbols-outlined">calendar_month</span>
+              <p>No hay horarios cargados</p>
+            </div>
+          }
+        </div>
+
+        <div class="stat-card wide-card">
+          <h3>Registro de Actividad</h3>
+          <div class="empty-state">
+            <p>No hay actividades nuevas registradas en el día de hoy</p>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side-stats">
+        <div class="stat-card full-height">
+          <div class="card-header-inline">
+            <h3>Listado de Alumnos</h3>
+            <span class="count-badge" *ngIf="studentList$ | async as students">{{
+              students.length
+            }}</span>
+          </div>
+
+          <div class="subject-filter-container">
+            <select
+              class="select-subject"
+              [value]="selectedSubjectId"
+              (change)="onSubjectChange($event)"
+            >
+              <option *ngFor="let subject of professorSubjects$ | async" [value]="subject.id">
+                {{ subject.subject_name }}
+              </option>
+            </select>
+          </div>
+
+          @if (studentList$ | async; as students) {
+            <div class="students-scroll-area">
+              @if (students.length > 0) {
+                <div class="students-list">
+                  <div class="student-item" *ngFor="let student of students">
+                    <div class="student-avatar">
+                      <span class="material-symbols-outlined">person</span>
+                    </div>
+                    <div class="student-info">
+                      <p class="student-name">{{ student.name }}</p>
+                      <p class="student-email">{{ student.email || 'Alumno Regular' }}</p>
+                    </div>
+                  </div>
+                </div>
+              } @else {
+                <div class="empty-state-container">
+                  <span class="material-symbols-outlined">group_off</span>
+                  <p>No hay alumnos inscritos en esta materia</p>
+                </div>
+              }
+            </div>
+          } @else {
+            <div
+              class="loading-card-state"
+              style="flex: 1; display: flex; align-items: center; justify-content: center"
+            >
+              <div class="list-loading">
+                <p>Cargando alumnos...</p>
+              </div>
+            </div>
+          }
+        </div>
+      </aside>
+    </div>
+  </div>
+</main>

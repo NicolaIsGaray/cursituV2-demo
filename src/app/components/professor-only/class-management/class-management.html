@@ -1,0 +1,253 @@
+<nav class="top-nav">
+  <button class="btn-back" (click)="goBack()">
+    <span class="material-symbols-outlined">arrow_back</span>
+    Regresar
+  </button>
+</nav>
+
+<div class="course-header" *ngIf="subject$ | async as subject">
+  <h2>{{ subject.subject_name }}</h2>
+</div>
+
+<main *ngIf="authService.userRole$ | async as rol" style="overflow: hidden">
+  <div class="form-scroll-container" *ngIf="rol === 'DOCENTE'">
+    <div class="form-card" *ngIf="subject$ | async as subject">
+      <h2>{{class_mode === 'editar' ? 'Editar Sección' : 'Agregar Nueva Sección'}}</h2>
+      <form [formGroup]="topicForm" (ngSubmit)="onSubmit()">
+        <section class="form-group">
+          <label for="section-name">Nombre de la sección:</label>
+          <input
+            id="section-name"
+            type="text"
+            formControlName="title"
+            class="input-field"
+            placeholder="Ej: Introducción a la materia o Primer Parcial"
+          />
+        </section>
+
+        <section class="form-group">
+          <label>Contenido teórico / descriptivo:</label>
+          <div>
+            <quill-editor
+              class="content-editor"
+              id="body-editor"
+              formControlName="content"
+              theme="snow"
+              [modules]="editorModules"
+              placeholder="Escribe el contenido didáctico del curso aquí..."
+            ></quill-editor>
+          </div>
+        </section>
+
+        <div class="grid-columns">
+          <!-- Columna Izquierda: Archivos Adjuntos -->
+          <div class="files-column">
+            <div class="column-header">
+              <label>Material de clase:</label>
+              <!-- type="button" evita que este botón dispare el submit del form por accidente -->
+              <button type="button" class="btn-upload" title="Agregar archivos">
+                <span class="material-symbols-outlined">add_circle</span>
+                <span>Adjuntar</span>
+              </button>
+            </div>
+
+            <label class="sub-label">Documentos añadidos a la sección:</label>
+            <ul class="file-list">
+              <li>
+                <span class="material-symbols-outlined icon-doc">description</span>
+                <span class="file-name">Manejo de Errores.pdf</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined icon-folder">folder</span>
+                <span class="file-name">Ejemplos Polimorfismo</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined icon-doc">description</span>
+                <span class="file-name">Polimorfismo.docx</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined icon-folder">folder</span>
+                <span class="file-name">Guías y Ejercicios</span>
+              </li>
+              <li>
+                <span class="material-symbols-outlined icon-doc">description</span>
+                <span class="file-name">Teoría de Herencia.pdf</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Columna Derecha: Parámetros de Entrega -->
+          <div class="delivery-column">
+            <label>¿Requiere entrega de tareas por parte del alumno?</label>
+            <div class="toggle-group">
+              <button
+                type="button"
+                class="toggle-btn"
+                [class.active]="mode === 'entregable'"
+                [class.inactive]="mode !== 'entregable'"
+                (click)="switchMode('entregable')"
+              >
+                Sí
+              </button>
+
+              <button
+                type="button"
+                class="toggle-btn"
+                [class.active]="mode === 'teorico'"
+                [class.inactive]="mode !== 'teorico'"
+                (click)="switchMode('teorico')"
+              >
+                No
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- NUEVO FORMULARIO: Condicionado dinámicamente al modo entregable -->
+        <div
+          class="assignment-form-container"
+          *ngIf="mode === 'entregable'"
+          [formGroup]="assignmentForm"
+        >
+          <div class="section-divider">
+            <span>Configuración de la Tarea Escolar</span>
+          </div>
+
+          <div class="assignment-grid">
+            <!-- Datos básicos de la consigna -->
+            <div class="assignment-main-fields">
+              <div class="form-group-sub">
+                <label for="assignment-title">Título de la actividad:</label>
+                <input
+                  id="assignment-title"
+                  type="text"
+                  formControlName="assignmentTitle"
+                  class="input-field"
+                  placeholder="Ej: Trabajo Práctico N°1"
+                />
+              </div>
+
+              <div class="form-group-sub">
+                <label for="assignment-body">Cuerpo / Instrucciones adicionales:</label>
+                <div class="editor-wrapper">
+                  <quill-editor
+                    class="content-editor"
+                    id="assignment-editor"
+                    formControlName="assignmentContent"
+                    theme="snow"
+                    [modules]="editorModules"
+                    placeholder="Redacta los criterios de aceptación, pautas o consignas específicas para la entrega..."
+                  ></quill-editor>
+                </div>
+              </div>
+            </div>
+
+            <!-- Parámetros de control de la entrega -->
+            <div class="assignment-meta-fields">
+              <div class="form-group-sub">
+                <label for="due-date">Fecha límite de entrega:</label>
+                <div class="date-input-wrapper">
+                  <input
+                    id="due-date"
+                    type="datetime-local"
+                    formControlName="assignmentLimit"
+                    class="input-field date-picker"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group-sub">
+                <label>Formato admitido para el envío:</label>
+                <div class="format-options-grid">
+                  <button
+                    type="button"
+                    class="format-card-btn"
+                    [class.selected]="assignmentFormat === 'archivo'"
+                    (click)="setFormat('archivo')"
+                  >
+                    <span class="material-symbols-outlined">description</span>
+                    <span>Archivo</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="format-card-btn"
+                    [class.selected]="assignmentFormat === 'carpeta'"
+                    (click)="setFormat('carpeta')"
+                  >
+                    <span class="material-symbols-outlined">folder_zip</span>
+                    <span>Carpeta (.zip)</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="format-card-btn"
+                    [class.selected]="assignmentFormat === 'texto'"
+                    (click)="setFormat('texto')"
+                  >
+                    <span class="material-symbols-outlined">article</span>
+                    <span>Texto Plano</span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="delivery-column">
+                <label>¿Que tipo de actividad es?</label>
+                <div class="toggle-group">
+                  <button
+                    type="button"
+                    class="toggle-btn"
+                    [class.active]="assignmentType === 'tarea'"
+                    [class.inactive]="assignmentType !== 'tarea'"
+                    (click)="setType('tarea')"
+                  >
+                    Tarea
+                  </button>
+
+                  <button
+                    type="button"
+                    class="toggle-btn"
+                    [class.active]="assignmentType === 'parcial'"
+                    [class.inactive]="assignmentType !== 'parcial'"
+                    (click)="setType('parcial')"
+                  >
+                    Parcial
+                  </button>
+                </div>
+              </div>
+
+              <div class="delivery-column">
+                <label>¿Está habilitado para entregar?</label>
+                <div class="toggle-group">
+                  <button
+                    type="button"
+                    class="toggle-btn"
+                    [class.active]="assignmentEnabled === 'habilitado'"
+                    [class.inactive]="assignmentEnabled !== 'habilitado'"
+                    (click)="setAvaiability('habilitado')"
+                  >
+                    Si
+                  </button>
+
+                  <button
+                    type="button"
+                    class="toggle-btn"
+                    [class.active]="assignmentEnabled === 'deshabilitado'"
+                    [class.inactive]="assignmentEnabled !== 'deshabilitado'"
+                    (click)="setAvaiability('deshabilitado')"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <button type="submit" class="btn-finalizar">Guardar Sección</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>

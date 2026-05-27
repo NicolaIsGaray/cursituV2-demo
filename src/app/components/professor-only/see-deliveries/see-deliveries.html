@@ -1,0 +1,115 @@
+<main *ngIf="authService.userRole$ | async as rol">
+  <div class="entregas-container" *ngIf="rol === 'DOCENTE'">
+    <!-- Botón Volver -->
+    <a class="btn-back" (click)="goBack()">
+      <span class="material-symbols-outlined">arrow_back</span>
+      Regresar
+    </a>
+
+    @if (currentSubject$ | async; as subject) {
+      <header class="entregas-header">
+        @if (currentAssignment$ | async; as activity) {
+          <div class="tp-info">
+            <h1>{{ activity.title }}</h1>
+            <span class="materia-sub">Materia: {{ subject.subject_name }}</span>
+          </div>
+        }
+        <button class="btn-descargar-todo">
+          <span class="material-symbols-outlined">download_for_offline</span>
+          Descargar Todo (.zip)
+        </button>
+      </header>
+    }
+
+    <div class="tabla-card" *ngIf="submissionList$ | async as submissions">
+      <div class="tabla-header">
+        <span class="col-alumno">ALUMNO / FECHA</span>
+        <span class="col-archivo">ARCHIVO ENTREGADO</span>
+        <span class="col-calificacion">CALIFICACIÓN</span>
+        <span class="col-estado">ESTADO</span>
+      </div>
+
+      <div class="tabla-body">
+        @for (item of submissions; track item.studentId) {
+          <div class="entrega-row">
+            <div class="col-alumno student-cell">
+              <div class="avatar-placeholder"></div>
+              <div class="student-info">
+                <strong>{{ item.studentName }}</strong>
+
+                @if (item.submissionDate) {
+                  <span class="fecha-entrega" [class.warning]="item.isLate">
+                    Entregado: {{ formatDate(item.submissionDate) }}
+                    {{ item.isLate ? '(Fuera de término)' : '' }}
+                  </span>
+                } @else {
+                  <span class="fecha-entrega sin-entregar">Sin entregar</span>
+                }
+              </div>
+            </div>
+
+            <div class="col-archivo">
+              @if (item.fileUrl) {
+                <a class="file-link" (click)="downloadFile(item.fileUrl)">
+                  <span class="material-symbols-outlined">description</span>
+                  {{ getFileName(item.fileUrl) }}
+                </a>
+              } @else {
+                <span class="no-file">—</span>
+              }
+            </div>
+
+            <div class="col-calificacion">
+              <div class="input-grade-group">
+                <input
+                  type="number"
+                  class="grade-input"
+                  placeholder="-"
+                  min="0"
+                  max="10"
+                  [(ngModel)]="item.grade"
+                  (keydown)="validateKeyboard($event)"
+                  (input)="item.grade = item.grade! > 10 ? 10 : item.grade"
+                  [disabled]="item.status === 'SIN_ENTREGAR'"
+                />
+
+                @if (item.status === 'CORREGIDO') {
+                  <button
+                    class="btn-save-grade checked"
+                    (click)="saveGrade(item)"
+                    title="Actualizar nota"
+                  >
+                    <span class="material-symbols-outlined">check</span>
+                  </button>
+                } @else {
+                  <button
+                    class="btn-save-grade pending"
+                    (click)="saveGrade(item)"
+                    [disabled]="item.status === 'SIN_ENTREGAR' || item.grade === null"
+                    title="Guardar nota"
+                  >
+                    <span class="material-symbols-outlined">save</span>
+                  </button>
+                }
+              </div>
+            </div>
+
+            <div class="col-estado">
+              @if (item.status === 'CORREGIDO') {
+                <span class="badge corregido">CORREGIDO</span>
+              } @else if (item.status === 'PENDIENTE') {
+                <span class="badge pendiente">PENDIENTE</span>
+              } @else {
+                <span class="badge vacio">SIN ENTREGAR</span>
+              }
+            </div>
+          </div>
+        } @empty {
+          <div class="no-students-state">
+            <p>No hay alumnos asignados a esta materia actualmente.</p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</main>
