@@ -10,9 +10,6 @@ RUN npm install
 COPY src/ ./src/
 COPY angular.json tsconfig*.json set-env.js ./
 
-ARG ANGULAR_API_URL
-ENV ANGULAR_API_URL=$ANGULAR_API_URL
-
 RUN npm run build:prod
 
 # ==========================================
