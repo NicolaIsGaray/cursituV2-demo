@@ -25,6 +25,7 @@ Antes de comenzar, asegurate de tener instaladas las siguientes herramientas en 
 
 ```bash
 git clone https://github.com/NicolaIsGaray/cursituV2.git
+```
 
 ### Configurar la base de datos
 
@@ -33,8 +34,6 @@ Para que la demo funcione de manera aislada y segura, el sistema requiere una va
 * **Nombre:** `MONGO_URI_TESTER`
 * **Valor:** URL de conexión local o remota provista por el administrador del clúster.
 * *Ejemplo local:* `mongodb://localhost:27017/cursitu_demo`
-
-
 
 ---
 
@@ -56,10 +55,10 @@ Con el servidor backend en ejecución, abrí una terminal nueva posicionada en l
 ```bash
 # Instalar los paquetes y dependencias del cliente
 npm install
-
+```
+```bash
 # Levantar el servidor de desarrollo local
 ng serve
-
 ```
 
 Una vez que la compilación finalice con éxito, abrí tu navegador e ingresá a la plataforma desde: [http://localhost:4200](https://www.google.com/search?q=http://localhost:4200)
