@@ -18,8 +18,10 @@ RUN npm run build:prod
 # ==========================================
 # ETAPA 2: Construcción del Backend (Spring Boot con Java 25)
 # ==========================================
-FROM maven:3.9.9-eclipse-temurin-25-alpine AS backend-build
+FROM eclipse-temurin:25-jdk-alpine AS backend-build
 WORKDIR /app
+
+RUN apk add --no-cache maven
 
 COPY pom.xml .
 RUN mvn dependency:go-offline -B
