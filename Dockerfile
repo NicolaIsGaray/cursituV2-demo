@@ -7,8 +7,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+COPY angular.json tsconfig*.json ./
 COPY src/ ./src/
-COPY angular.json tsconfig*.json set-env.js ./
 
 RUN npm run build:prod
 
@@ -25,7 +25,7 @@ RUN mvn dependency:go-offline -B
 
 COPY src/ ./src/
 
-RUN rm -rf src/main/resources/static/*
+RUN rm -rf src/main/resources/static/* && mkdir -p src/main/resources/static/
 
 COPY --from=frontend-build /app/src/main/resources/static/ src/main/resources/static/
 
