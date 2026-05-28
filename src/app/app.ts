@@ -27,7 +27,10 @@ export class App implements OnInit {
   menuItems: any[] = [];
 
   ngOnInit() {
-    this.authService.getAuthStatus()
+    if (this.router.url.includes('/register-professor')) {
+      return;
+    }
+    this.authService.getAuthStatus();
     this.authService.userRole$.subscribe((rol) => {
       this.buildMenu(rol);
     });
