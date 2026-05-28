@@ -30,7 +30,6 @@ export class App implements OnInit {
     if (this.router.url.includes('/register-professor')) {
       return;
     }
-    this.authService.getAuthStatus();
     this.authService.userRole$.subscribe((rol) => {
       this.buildMenu(rol);
     });

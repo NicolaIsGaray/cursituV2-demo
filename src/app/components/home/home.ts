@@ -13,7 +13,6 @@ import { Subject } from '../../models/subject.model';
 import { Topic } from '../../models/topic.model';
 import { TopicService } from '../../services/topic.service';
 import { ClassroomService } from '../../services/classroom.service';
-import { Classroom } from '../../models/classroom.model';
 import { Assignment } from '../../models/assignment.model';
 
 @Component({
@@ -52,8 +51,6 @@ export class Home implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.getAuthStatus();
-
     const user = this.authService.currentUserValue!;
     this.currentUser$ = this.userService.getUserById(user.id!);
 

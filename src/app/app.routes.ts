@@ -27,41 +27,43 @@ import { AnnouncementPanel } from './components/admin/announcement-panel/announc
 import { ManageAssignments } from './components/professor-only/manage-assignments/manage-assignments';
 import { AssignmentPreview } from './components/professor-only/assignment-preview/assignment-preview';
 import { TeacherRegister } from './components/auth/teacher-register/teacher-register';
+import { authGuard } from './guard/auth.guard';
 
 export const routes: Routes = [
-    { path: '', component: Home, pathMatch: 'full' },
-    { path: 'home', component: Home },
-
-    // DEMO
+    // RUTAS PÚBLICAS
+    { path: 'login', component: Login },
     { path: 'register-professor', component: TeacherRegister },
 
-    { path: 'login', component: Login },
-    { path: 'subjects', component: SubjectsList },
-    { path: 'groups', component: Groups },
-    { path: 'transmission-lobby', component: TransmissionLobby },
-    { path: 'transmission-live', component: TransmissionLive },
+    // RUTAS PRIVADAS
+    { path: '', component: Home, pathMatch: 'full', canActivate: [authGuard] },
+    { path: 'home', component: Home, canActivate: [authGuard] },
+    { path: 'subjects', component: SubjectsList, canActivate: [authGuard] },
+    { path: 'groups', component: Groups, canActivate: [authGuard] },
+    { path: 'transmission-lobby', component: TransmissionLobby, canActivate: [authGuard] },
+    { path: 'transmission-live', component: TransmissionLive, canActivate: [authGuard] },
 
-    { path: 'user-management', component: UserManagement},
-    { path: 'subject-management', component: SubjectManagement},
-    { path: 'announcement-panel', component: AnnouncementPanel},
+    { path: 'user-management', component: UserManagement, canActivate: [authGuard] },
+    { path: 'subject-management', component: SubjectManagement, canActivate: [authGuard] },
+    { path: 'announcement-panel', component: AnnouncementPanel, canActivate: [authGuard] },
 
-    { path: 'professor-panel', component: ProfessorPanel },
-    { path: 'manage-grades', component: ManageGrades },
-    { path: 'class-management', component: ClassManagement },
-    { path: 'edit-subject', component: EditSubject },
-    { path: 'manage-dates', component: ManageDates },
-    { path: 'manage-tasks', component: ManageAssignments },
-    { path: 'see-assignment/:id', component: AssignmentPreview },
-    { path: 'see-deliveries', component: SeeDeliveries },
-    { path: 'manage-finals', component: ManageFinals },
-    { path: 'students', component: StudentsList },
-    { path: 'my-notices', component: MyNotices },
+    { path: 'professor-panel', component: ProfessorPanel, canActivate: [authGuard] },
+    { path: 'manage-grades', component: ManageGrades, canActivate: [authGuard] },
+    { path: 'class-management', component: ClassManagement, canActivate: [authGuard] },
+    { path: 'edit-subject', component: EditSubject, canActivate: [authGuard] },
+    { path: 'manage-dates', component: ManageDates, canActivate: [authGuard] },
+    { path: 'manage-tasks', component: ManageAssignments, canActivate: [authGuard] },
+    { path: 'see-assignment/:id', component: AssignmentPreview, canActivate: [authGuard] },
+    { path: 'see-deliveries', component: SeeDeliveries, canActivate: [authGuard] },
+    { path: 'manage-finals', component: ManageFinals, canActivate: [authGuard] },
+    { path: 'students', component: StudentsList, canActivate: [authGuard] },
+    { path: 'my-notices', component: MyNotices, canActivate: [authGuard] },
 
-    { path: 'current-classroom/:id', component: CurrentClassroom },
-    { path: 'pending-tasks', component: PendingTasks },
-    { path: 'send-task/:id', component: SendTask },
-    { path: 'notices', component: NoticesList },
-    { path: 'notices/:id', component: NoticeDetails },
-    { path: 'configuration', component: PageConfiguration },
-    { path: '**', component: NotFound }
+    { path: 'current-classroom/:id', component: CurrentClassroom, canActivate: [authGuard] },
+    { path: 'pending-tasks', component: PendingTasks, canActivate: [authGuard] },
+    { path: 'send-task/:id', component: SendTask, canActivate: [authGuard] },
+    { path: 'notices', component: NoticesList, canActivate: [authGuard] },
+    { path: 'notices/:id', component: NoticeDetails, canActivate: [authGuard] },
+    { path: 'configuration', component: PageConfiguration, canActivate: [authGuard] },
+    
+    { path: '**', component: NotFound, canActivate: [authGuard] }
 ];
