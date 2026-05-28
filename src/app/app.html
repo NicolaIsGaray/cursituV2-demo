@@ -190,6 +190,7 @@
     </header>
 
     <div class="view-container">
+      <app-spinner></app-spinner>
       <router-outlet></router-outlet>
     </div>
   </main>
@@ -197,6 +198,7 @@
 
 @if (isLoginPage() || isRegisterTeacherPage()) {
   <div class="full-screen-login">
+    <app-spinner></app-spinner>
     <router-outlet></router-outlet>
   </div>
 }

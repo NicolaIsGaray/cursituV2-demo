@@ -19,6 +19,7 @@ export class TopicService {
   private readonly TOPIC_KEY = 'cursitu_selected_topic';
 
   setTopicInStorage(value: any): void {
+    if(value == null) return;
     const now = new Date().getTime();
 
     const item = {

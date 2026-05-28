@@ -13,6 +13,7 @@ import pepedevelopers.cursitu.repository.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -35,15 +36,36 @@ public class SubjectService {
   public SubjectEntity createSubject(SubjectEntity subject) {
     subject.setIsSuspended(false);
 
+    // 1. Guardar la materia inicialmente para obtener su ID
     SubjectEntity savedSubject = subjectRepo.save(subject);
 
+    // 2. Buscar todos los alumnos que se van a vincular
+    List<UserEntity> students = userRepo.findByRole("ALUMNO");
+    List<String> studentIds = new ArrayList<>();
+
+    if (students != null && !students.isEmpty()) {
+      for (UserEntity student : students) {
+        // Vinculación 1: Agrega el ID de la materia al alumno
+        assignSubjectToUser(student.getId(), savedSubject.getId());
+        // Colectamos los IDs de los alumnos para el aula
+        studentIds.add(student.getId());
+      }
+    }
+
+    // 3. Crear y asociar el Aula Virtual (Classroom) con sus alumnos ya cargados
     ClassroomEntity newClassroom = new ClassroomEntity();
     newClassroom.setSubject_id(savedSubject.getId());
+
+    // Vinculación 2: Seteamos la lista de alumnos directamente al aula
+    newClassroom.setStudents_id(studentIds);
+
     ClassroomEntity savedClassroom = classroomRepo.save(newClassroom);
 
+    // 4. Vincular el ID del aula virtual a la materia
     savedSubject.setClassroom_id(savedClassroom.getId());
     subjectRepo.save(savedSubject);
 
+    // 5. Asignar la materia al profesor que la dicta
     assignSubjectToUser(subject.getProfessor_id(), savedSubject.getId());
 
     return savedSubject;

@@ -1,19 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener, OnInit, signal } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, HostListener, inject, NgZone, OnInit, signal } from '@angular/core';
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterModule } from '@angular/router';
 import { UiService } from './services/ui.service';
 import { AuthService } from './services/auth.service';
 import { User } from './models/user.model';
 import { Role } from './models/roles';
+import { SpinnerService } from './services/spinner.service';
+import { Spinner } from './components/spinner/spinner';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, Spinner],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
 export class App implements OnInit {
   protected readonly title = signal('cursitu');
+
+  private spinnerService = inject(SpinnerService);
+  private ngZone = inject(NgZone);
 
   isSidebarOpen = false;
   currentUser: User | null = null;
@@ -27,6 +32,23 @@ export class App implements OnInit {
   menuItems: any[] = [];
 
   ngOnInit() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationStart) {
+        // Ejecutamos dentro de la zona de Angular para asegurar reactividad inmediata
+        this.ngZone.run(() => {
+          this.spinnerService.show();
+        });
+      } else if (
+        event instanceof NavigationEnd || 
+        event instanceof NavigationCancel || 
+        event instanceof NavigationError
+      ) {
+        this.ngZone.run(() => {
+          this.spinnerService.hide();
+        });
+      }
+    });
+    
     if (this.router.url.includes('/register-professor')) {
       return;
     }

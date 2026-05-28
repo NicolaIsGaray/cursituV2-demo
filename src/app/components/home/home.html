@@ -167,7 +167,7 @@
                     No cuenta con entrega.
                   </span>
                 }
-                <span class="meta-item-time"> {{ activityTime.timeAgo }} </span>
+                <span class="meta-item-time"> {{ activityTime.timeAgo ? activityTime.timeAgo : 'No hay registro de tiempo' }} </span>
               </footer>
             </div>
           } @else {

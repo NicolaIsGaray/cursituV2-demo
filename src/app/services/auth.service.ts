@@ -68,6 +68,8 @@ export class AuthService {
 
     this.userSubject.next(null);
     this.roleSubject.next('ALUMNO' as Role);
+
+    window.location.reload();
   }
 
   // Método auxiliar privado para el constructor del Subject
